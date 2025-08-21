@@ -1,5 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const BLUE = "#245af0";
@@ -48,9 +49,9 @@ const Header = () => {
           className="d-flex align-items-center py-3"
           style={{ ...innerWrap, gap: 18, flexWrap: "wrap" }}
         >
-          {/* Logo */}
-          <a
-            href="/"
+          {/* Logo (to Home) */}
+          <Link
+            to="/"
             className="d-flex align-items-center justify-content-center"
             style={{
               width: 56,
@@ -63,7 +64,7 @@ const Header = () => {
             }}
           >
             IPE
-          </a>
+          </Link>
 
           {/* Brand */}
           <div className="d-none d-md-block" style={{ marginRight: 10 }}>
@@ -88,6 +89,7 @@ const Header = () => {
               marginLeft: "auto",
               marginRight: "auto",
             }}
+            onSubmit={(e) => e.preventDefault()}
           >
             🔍
             <input
@@ -105,16 +107,10 @@ const Header = () => {
 
           {/* Actions */}
           <div className="d-flex align-items-center ms-md-3" style={{ gap: 16 }}>
-            <button
-              className="btn p-0 border-0 bg-transparent"
-              style={{ fontSize: 18 }}
-            >
+            <button className="btn p-0 border-0 bg-transparent" style={{ fontSize: 18 }}>
               ♡
             </button>
-            <button
-              className="btn p-0 border-0 bg-transparent"
-              style={{ fontSize: 18 }}
-            >
+            <button className="btn p-0 border-0 bg-transparent" style={{ fontSize: 18 }}>
               🛒
             </button>
             <a
@@ -154,24 +150,22 @@ const Header = () => {
         }}
       >
         <div style={{ ...innerWrap }}>
-          <ul
-            className="nav justify-content-center gap-4 py-2"
-            style={{ fontSize: 14, ...medium }}
-          >
+          <ul className="nav justify-content-center gap-4 py-2" style={{ fontSize: 14, ...medium }}>
             <li className="nav-item">
-              <a className="nav-link text-dark p-0" href="#">
+              <Link className="nav-link text-dark p-0" to="/">
                 Home
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-dark p-0" href="#">
+              {/* ✅ Link “Home Printer” to /HomePrinter */}
+              <Link className="nav-link text-dark p-0" to="./HomePrinter">
                 Home Printer
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-dark p-0" href="#">
-                Ink, Toner & Paper
-              </a>
+              <Link className="nav-link text-dark p-0" to="./InkTonerPaper">
+                InkTonerPaper
+              </Link>
             </li>
             <li className="nav-item">
               <a className="nav-link text-dark p-0" href="#">
