@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/Innometrics_PrinterWebsite/static/css/main.000e115f.css",
+    "main.js": "/Innometrics_PrinterWebsite/static/js/main.d0f48459.js",
+    "static/media/fa-solid-900.ttf": "/Innometrics_PrinterWebsite/static/media/fa-solid-900.4a2cd718d7031b732e76.ttf",
+    "static/media/fa-brands-400.ttf": "/Innometrics_PrinterWebsite/static/media/fa-brands-400.150de8eaa454d669c405.ttf",
+    "static/media/fa-solid-900.woff2": "/Innometrics_PrinterWebsite/static/media/fa-solid-900.bb975c966c37455a1bc3.woff2",
+    "static/media/fa-brands-400.woff2": "/Innometrics_PrinterWebsite/static/media/fa-brands-400.e033a13ee751afc1860c.woff2",
+    "static/media/fa-regular-400.ttf": "/Innometrics_PrinterWebsite/static/media/fa-regular-400.d87474231f4192884802.ttf",
+    "static/media/carousel-2.jpg": "/Innometrics_PrinterWebsite/static/media/carousel-2.197592f92e707a9f2008.jpg",
+    "static/media/carousel-1.jpg": "/Innometrics_PrinterWebsite/static/media/carousel-1.b7f40bb6af0530196d6e.jpg",
+    "static/media/team-2.jpg": "/Innometrics_PrinterWebsite/static/media/team-2.a76b9939d140923ac491.jpg",
+    "static/media/about.jpg": "/Innometrics_PrinterWebsite/static/media/about.f6b2b864181f37517016.jpg",
+    "static/media/team-3.jpg": "/Innometrics_PrinterWebsite/static/media/team-3.121802cb5a2f17ceb575.jpg",
+    "static/media/team-1.jpg": "/Innometrics_PrinterWebsite/static/media/team-1.78de05851a957f8ea965.jpg",
+    "static/media/project-2.jpg": "/Innometrics_PrinterWebsite/static/media/project-2.73c120ddb92e485ebfcd.jpg",
+    "static/media/team-4.jpg": "/Innometrics_PrinterWebsite/static/media/team-4.ed72b9cd32216cd4d392.jpg",
+    "static/media/project-3.jpg": "/Innometrics_PrinterWebsite/static/media/project-3.d4bdd4814117a841fad3.jpg",
+    "static/media/fa-regular-400.woff2": "/Innometrics_PrinterWebsite/static/media/fa-regular-400.3223dc79c1adee56370b.woff2",
+    "static/media/project-1.jpg": "/Innometrics_PrinterWebsite/static/media/project-1.5fe9c8516f994ed750d3.jpg",
+    "static/media/project-4.jpg": "/Innometrics_PrinterWebsite/static/media/project-4.164e0ff6b62dda912813.jpg",
+    "static/media/fa-v4compatibility.ttf": "/Innometrics_PrinterWebsite/static/media/fa-v4compatibility.0e3a648be390bd8cb094.ttf",
+    "static/media/fa-v4compatibility.woff2": "/Innometrics_PrinterWebsite/static/media/fa-v4compatibility.68577e40f3e70067b5da.woff2",
+    "index.html": "/Innometrics_PrinterWebsite/index.html",
+    "main.000e115f.css.map": "/Innometrics_PrinterWebsite/static/css/main.000e115f.css.map",
+    "main.d0f48459.js.map": "/Innometrics_PrinterWebsite/static/js/main.d0f48459.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.000e115f.css",
+    "static/js/main.d0f48459.js"
+  ]
+}
