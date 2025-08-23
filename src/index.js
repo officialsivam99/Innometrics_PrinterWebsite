@@ -12,6 +12,12 @@ import ProductDetail from './components/ProductDetail';
 import { products } from './components/products';
 import HomePrinter from './components/HomePrinter';
 import InkTonerPaper from './components/InkTonerPaper';
+import OfficePrinters from './components/OfficePrinters';
+import InkjetPrinter from './components/InkJetPrinters';
+import LaserPrinter from './components/LaserPrinters';
+import Privacy from './pages/privacy';
+import Terms from './pages/terms';
+import Refund from './pages/refund';
 
 const router = createBrowserRouter([
   {
@@ -47,7 +53,33 @@ const router = createBrowserRouter([
   {
     path: '/InkTonerPaper',
     element: <InkTonerPaper />,
-  }
+  },
+
+  {
+    path: '/OfficePrinters',
+    element: <OfficePrinters />,
+  },
+  {
+    path: '/InkJetPrinters',
+    element: <InkjetPrinter />,
+  },
+  {
+    path: '/LaserPrinters',
+    element: <LaserPrinter />,
+  },
+  {
+    path: '/privacy',
+    element: <Privacy />,
+  },
+  {
+    path: '/terms',
+    element: <Terms />,
+  },
+  {
+    path: '/refund',
+    element: <Refund />,
+  },
+
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

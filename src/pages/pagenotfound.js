@@ -1,6 +1,7 @@
 import Header from '../components/header'
-import Footer from '../components/footer'
+
 import Eachpart from "../components/eachpart";
+import LegalFooter from '../components/LegalFooter';
 
 const Pagenotfound = () => {
   return (
@@ -20,7 +21,8 @@ const Pagenotfound = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      
+      <LegalFooter />
     </div>
   );
 }

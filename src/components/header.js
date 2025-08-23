@@ -1,6 +1,8 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
+import LaserPrinter from "./LaserPrinters";
+
 
 const Header = () => {
   const BLUE = "#245af0";
@@ -50,26 +52,41 @@ const Header = () => {
           style={{ ...innerWrap, gap: 18, flexWrap: "wrap" }}
         >
           {/* Logo (to Home) */}
-          <Link
-            to="/"
-            className="d-flex align-items-center justify-content-center"
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 14,
-              backgroundColor: BLUE,
-              textDecoration: "none",
-              color: "#fff",
-              ...medium,
-            }}
-          >
-            IPE
-          </Link>
+            <Link
+              to="/"
+              className="d-flex align-items-center justify-content-center"
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: "50%",
+                background: "linear-gradient(135deg, #245af0 0%, #00c6fb 100%)",
+                textDecoration: "none",
+                color: "#fff",
+                fontWeight: "bold",
+                fontSize: 26,
+                boxShadow: "0 4px 16px rgba(36,90,240,0.18)",
+                letterSpacing: 2,
+                ...medium,
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center", gap: 0 }}>
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <radialGradient id="pmo-grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                      <stop offset="0%" stopColor="#fff" stopOpacity="0.9" />
+                      <stop offset="100%" stopColor="#e3f0ff" stopOpacity="0.7" />
+                    </radialGradient>
+                  </defs>
+                  <circle cx="20" cy="20" r="18" fill="url(#pmo-grad)" />
+                    <text x="20" y="25" textAnchor="middle" dominantBaseline="middle" fontSize="17" fill="#002060" fontWeight="bold" fontFamily="'Segoe UI', 'Arial', sans-serif" style={{filter: 'drop-shadow(0 1px 2px #fff), drop-shadow(0 0 2px #245af0)'}}>PMO</text>
+                </svg>
+              </span>
+            </Link>
 
           {/* Brand */}
           <div className="d-none d-md-block" style={{ marginRight: 10 }}>
             <div style={{ fontSize: 20, color: BLUE, ...medium }}>
-              Ink & Paper Express
+              Print Mate Online
             </div>
             <div style={{ fontSize: 14, color: MUTED, ...medium }}>
               Fast Printer & Ink to Your Doorstep
@@ -157,30 +174,34 @@ const Header = () => {
               </Link>
             </li>
             <li className="nav-item">
-              {/* ✅ Link “Home Printer” to /HomePrinter */}
-              <Link className="nav-link text-dark p-0" to="./HomePrinter">
+              <Link className="nav-link text-dark p-0" to="/HomePrinter">
                 Home Printer
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-dark p-0" to="./InkTonerPaper">
+              <Link className="nav-link text-dark p-0" to="/InkTonerPaper">
                 InkTonerPaper
               </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-dark p-0" href="#">
-                Office Printer
-              </a>
+              <Link className="nav-link text-dark p-0" to="/OfficePrinters">
+                Office Printers
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-dark p-0" href="#">
+              <Link className="nav-link text-dark p-0" to="/InkJetPrinters">
                 Inkjet Printers
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-dark p-0" href="#">
+              <Link className="nav-link text-dark p-0" to="/InkJetPrinters">
+                Inkjet Printers
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link text-dark p-0" to="/LaserPrinters">
                 Laser Printers
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="nav-link text-dark p-0" href="#">

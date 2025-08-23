@@ -1,6 +1,7 @@
 // src/components/FeaturedProducts.jsx
-import React from "react";
-import { FiTarget, FiZap } from "react-icons/fi";
+import React, { useState } from "react";
+import { FiTarget, FiZap, FiEye } from "react-icons/fi";
+import CartDrawer from "./CartDrawer";
 
 const cardShadow = "0 10px 28px rgba(20, 40, 120, .10)";
 const innerShadow = "0 10px 24px rgba(15, 30, 90, .08)";
@@ -132,10 +133,25 @@ const CTAButton = ({ label, tint = "blue", onClick }) => {
   );
 };
 
-const FeaturedProducts = ({
-  onBrowseHome = () => {},
-  onBrowseOffice = () => {},
-}) => {
+export default function FeaturedProducts() {
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [lastAdded, setLastAdded] = useState(null);
+
+  const handleAddToCart = (product) => {
+    setCartItems((prev) => {
+      const idx = prev.findIndex((i) => i.id === product.id);
+      if (idx > -1) {
+        const updated = [...prev];
+        updated[idx].qty += 1;
+        return updated;
+      }
+      return [...prev, { ...product, qty: 1 }];
+    });
+    setLastAdded(product);
+    setCartOpen(true);
+  };
+
   return (
     <section
       style={{
@@ -272,9 +288,14 @@ const FeaturedProducts = ({
             </OuterCard>
           </div>
         </div>
+
+        <CartDrawer
+          show={cartOpen}
+          onHide={() => setCartOpen(false)}
+          cartItems={cartItems}
+          onCheckout={() => alert("Proceeding to checkout...")}
+        />
       </div>
     </section>
   );
 };
-
-export default FeaturedProducts;

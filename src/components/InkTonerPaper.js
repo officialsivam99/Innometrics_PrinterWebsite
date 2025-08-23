@@ -21,6 +21,9 @@ import {
 } from "react-icons/tb";
 
 import { products } from "./products"; // central products data
+import Header from './header';
+import SupportAndTrust from './SupportAndTrust';
+import LegalFooter from './LegalFooter';
 
 const BLUE = "#245af0";
 const TEXT = "#0b1b33";
@@ -107,239 +110,245 @@ export default function InkTonerPaper({ onAddToCart = () => {} }) {
   }, [supplyProducts, query, brand, type, sort]);
 
   return (
-    <div style={{ background: "#f6f8fb" }}>
-      {/* ---------- HERO HEADER ---------- */}
-      <Container style={{ paddingTop: 28 }}>
-        <Card
-          className="border-0 shadow-sm"
-          style={{
-            borderRadius: 18,
-            background:
-              "linear-gradient(180deg, rgba(36,90,240,.06), rgba(36,90,240,.03))",
-          }}
-        >
-          <Card.Body style={{ padding: "28px 22px" }}>
-            <div className="d-flex align-items-start justify-content-between flex-wrap gap-3">
-              <div style={{ maxWidth: 840 }}>
-                <div style={{ color: MUTED, marginBottom: 6 }}>
-                  Home <span style={{ color: "#9ca3af" }}>›</span>{" "}
-                  <span style={{ color: BLUE, fontWeight: 600 }}>
+    <>
+      <Header />
+      <div style={{ background: "#f6f8fb" }}>
+        {/* ---------- HERO HEADER ---------- */}
+        <Container style={{ paddingTop: 28 }}>
+          <Card
+            className="border-0 shadow-sm"
+            style={{
+              borderRadius: 18,
+              background:
+                "linear-gradient(180deg, rgba(36,90,240,.06), rgba(36,90,240,.03))",
+            }}
+          >
+            <Card.Body style={{ padding: "28px 22px" }}>
+              <div className="d-flex align-items-start justify-content-between flex-wrap gap-3">
+                <div style={{ maxWidth: 840 }}>
+                  <div style={{ color: MUTED, marginBottom: 6 }}>
+                    Home <span style={{ color: "#9ca3af" }}>›</span>{" "}
+                    <span style={{ color: BLUE, fontWeight: 600 }}>
+                      Ink, Toner & Paper
+                    </span>
+                  </div>
+                  <h1
+                    className="fw-bold"
+                    style={{ fontSize: 38, color: TEXT, marginBottom: 10 }}
+                  >
                     Ink, Toner & Paper
-                  </span>
+                  </h1>
+                  <p style={{ color: "#475569", marginBottom: 0, maxWidth: 820 }}>
+                    Keep your printer performing at its best with genuine ink,
+                    toner, and premium paper. Choose high-yield cartridges, reliable toner,
+                    and bright paper — all with fast shipping and trusted quality.
+                  </p>
                 </div>
-                <h1
-                  className="fw-bold"
-                  style={{ fontSize: 38, color: TEXT, marginBottom: 10 }}
-                >
-                  Ink, Toner & Paper
-                </h1>
-                <p style={{ color: "#475569", marginBottom: 0, maxWidth: 820 }}>
-                  Keep your printer performing at its best with genuine ink,
-                  toner, and premium paper. Choose high-yield cartridges, reliable toner,
-                  and bright paper — all with fast shipping and trusted quality.
-                </p>
-              </div>
 
-              <div className="d-grid gap-3" style={{ minWidth: 260 }}>
-                <FeatureChip
-                  icon={<TbShieldCheck />}
-                  title="Genuine Quality"
-                  text="Original cartridges to protect your warranty"
-                />
-                <FeatureChip
-                  icon={<TbPackage />}
-                  title="XL Yield Options"
-                  text="Reduce replacement frequency and cost per page"
-                />
-                <FeatureChip
-                  icon={<TbTruck />}
-                  title="Fast Delivery"
-                  text="2-day shipping available in most areas"
-                />
-              </div>
-            </div>
-          </Card.Body>
-        </Card>
-      </Container>
-
-      {/* ---------- TOOLBAR / FILTERS ---------- */}
-      <Container style={{ paddingTop: 18, paddingBottom: 6 }}>
-        <Card className="border-0" style={{ borderRadius: 16 }}>
-          <Card.Body className="py-3">
-            <div className="d-flex align-items-center gap-3 flex-wrap">
-              <Badge
-                bg="light"
-                text="dark"
-                className="d-inline-flex align-items-center"
-                style={{ border: `1px solid ${LINE}`, padding: "10px 14px" }}
-              >
-                <TbFilter style={{ marginRight: 8 }} />
-                {filtered.length} Products
-              </Badge>
-
-              <InputGroup style={{ maxWidth: 360 }}>
-                <InputGroup.Text>
-                  <TbSearch />
-                </InputGroup.Text>
-                <Form.Control
-                  value={query}
-                  placeholder="Search by model, color, cartridge #..."
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-              </InputGroup>
-
-              <Form.Select
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-                style={{ maxWidth: 200 }}
-              >
-                {brandOptions.map((b) => (
-                  <option key={b}>{b}</option>
-                ))}
-              </Form.Select>
-
-              <Form.Select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                style={{ maxWidth: 180 }}
-              >
-                {typeOptions.map((t) => (
-                  <option key={t}>{t}</option>
-                ))}
-              </Form.Select>
-
-              <div className="ms-auto" />
-
-              <Form.Select
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                style={{ maxWidth: 200 }}
-              >
-                {sortOptions.map((s) => (
-                  <option key={s}>{s}</option>
-                ))}
-              </Form.Select>
-            </div>
-          </Card.Body>
-        </Card>
-      </Container>
-
-      {/* ---------- PRODUCT GRID ---------- */}
-      <Container style={{ paddingBottom: 42, paddingTop: 6 }}>
-        <Row className="g-4">
-          {filtered.map((p) => (
-            <Col key={p.id} xs={12} sm={6} lg={4} xl={3}>
-              <Card
-                className="h-100 border-0 shadow-sm"
-                style={{ borderRadius: 14, overflow: "hidden" }}
-              >
-                <div
-                  style={{
-                    background: "#f7fafc",
-                    minHeight: 180,
-                    display: "grid",
-                    placeItems: "center",
-                    padding: 14,
-                  }}
-                >
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    style={{ width: "100%", height: "auto", objectFit: "contain" }}
-                    loading="lazy"
+                <div className="d-grid gap-3" style={{ minWidth: 260 }}>
+                  <FeatureChip
+                    icon={<TbShieldCheck />}
+                    title="Genuine Quality"
+                    text="Original cartridges to protect your warranty"
+                  />
+                  <FeatureChip
+                    icon={<TbPackage />}
+                    title="XL Yield Options"
+                    text="Reduce replacement frequency and cost per page"
+                  />
+                  <FeatureChip
+                    icon={<TbTruck />}
+                    title="Fast Delivery"
+                    text="2-day shipping available in most areas"
                   />
                 </div>
+              </div>
+            </Card.Body>
+          </Card>
+        </Container>
 
-                <Card.Body className="d-flex flex-column">
-                  <div className="d-flex align-items-center justify-content-between mb-1">
-                    <Badge
-                      bg="light"
-                      text="dark"
-                      style={{ border: `1px solid ${LINE}` }}
-                    >
-                      {p.type ? p.type.toUpperCase() : "SUPPLY"}
-                    </Badge>
-                    {p.pageYield && (
-                      <Badge bg="success" title="Approximate page yield">
-                        {p.pageYield}
+        {/* ---------- TOOLBAR / FILTERS ---------- */}
+        <Container style={{ paddingTop: 18, paddingBottom: 6 }}>
+          <Card className="border-0" style={{ borderRadius: 16 }}>
+            <Card.Body className="py-3">
+              <div className="d-flex align-items-center gap-3 flex-wrap">
+                <Badge
+                  bg="light"
+                  text="dark"
+                  className="d-inline-flex align-items-center"
+                  style={{ border: `1px solid ${LINE}`, padding: "10px 14px" }}
+                >
+                  <TbFilter style={{ marginRight: 8 }} />
+                  {filtered.length} Products
+                </Badge>
+
+                <InputGroup style={{ maxWidth: 360 }}>
+                  <InputGroup.Text>
+                    <TbSearch />
+                  </InputGroup.Text>
+                  <Form.Control
+                    value={query}
+                    placeholder="Search by model, color, cartridge #..."
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                </InputGroup>
+
+                <Form.Select
+                  value={brand}
+                  onChange={(e) => setBrand(e.target.value)}
+                  style={{ maxWidth: 200 }}
+                >
+                  {brandOptions.map((b) => (
+                    <option key={b}>{b}</option>
+                  ))}
+                </Form.Select>
+
+                <Form.Select
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  style={{ maxWidth: 180 }}
+                >
+                  {typeOptions.map((t) => (
+                    <option key={t}>{t}</option>
+                  ))}
+                </Form.Select>
+
+                <div className="ms-auto" />
+
+                <Form.Select
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                  style={{ maxWidth: 200 }}
+                >
+                  {sortOptions.map((s) => (
+                    <option key={s}>{s}</option>
+                  ))}
+                </Form.Select>
+              </div>
+            </Card.Body>
+          </Card>
+        </Container>
+
+        {/* ---------- PRODUCT GRID ---------- */}
+        <Container style={{ paddingBottom: 42, paddingTop: 6 }}>
+          <Row className="g-4">
+            {filtered.map((p) => (
+              <Col key={p.id} xs={12} sm={6} lg={4} xl={3}>
+                <Card
+                  className="h-100 border-0 shadow-sm d-flex flex-column"
+                  style={{ borderRadius: 14, overflow: "hidden", minHeight: 420, display: "flex" }}
+                >
+                  <div
+                    style={{
+                      background: "#f7fafc",
+                      minHeight: 180,
+                      display: "grid",
+                      placeItems: "center",
+                      padding: 14,
+                    }}
+                  >
+                    <img
+                      src={p.image}
+                      alt={p.title}
+                      style={{ width: "100%", height: "auto", objectFit: "contain" }}
+                      loading="lazy"
+                    />
+                  </div>
+
+                  <Card.Body className="d-flex flex-column" style={{ flex: 1, minHeight: 200 }}>
+                    <div className="d-flex align-items-center justify-content-between mb-1">
+                      <Badge
+                        bg="light"
+                        text="dark"
+                        style={{ border: `1px solid ${LINE}` }}
+                      >
+                        {p.type ? p.type.toUpperCase() : "SUPPLY"}
                       </Badge>
-                    )}
-                  </div>
-
-                  <Card.Title style={{ fontSize: 16, color: TEXT }}>
-                    {p.title}
-                  </Card.Title>
-                  <Card.Text style={{ color: "#56617a", fontSize: 14 }}>
-                    {p.description}
-                  </Card.Text>
-
-                  {p.compatibleModels?.length ? (
-                    <small style={{ color: MUTED }}>
-                      Compatible: {p.compatibleModels.slice(0, 2).join(", ")}
-                      {p.compatibleModels.length > 2 ? " +" : ""}
-                    </small>
-                  ) : null}
-
-                  <div className="d-flex align-items-center justify-content-between mt-2">
-                    <div style={{ fontWeight: 800, fontSize: 18 }}>
-                      ${Number(p.price).toFixed(2)}
+                      {p.pageYield && (
+                        <Badge bg="success" title="Approximate page yield">
+                          {p.pageYield}
+                        </Badge>
+                      )}
                     </div>
-                    <div style={{ color: MUTED, fontSize: 12 }}>
-                      {p.delivery || "Fast shipping"}
-                    </div>
-                  </div>
 
-                  {p.rating ? (
-                    <div className="mt-1" style={{ color: "#f59e0b" }}>
-                      <StarRow rating={p.rating} />{" "}
+                    <Card.Title style={{ fontSize: 16, color: TEXT }}>
+                      {p.title}
+                    </Card.Title>
+                    <Card.Text style={{ color: "#56617a", fontSize: 14 }}>
+                      {p.description}
+                    </Card.Text>
+
+                    {p.compatibleModels?.length ? (
                       <small style={{ color: MUTED }}>
-                        ({p.reviewsCount ?? "—"})
+                        Compatible: {p.compatibleModels.slice(0, 2).join(", ")}
+                        {p.compatibleModels.length > 2 ? " +" : ""}
                       </small>
+                    ) : null}
+
+                    <div className="d-flex align-items-center justify-content-between mt-2">
+                      <div style={{ fontWeight: 800, fontSize: 18 }}>
+                        ${Number(p.price).toFixed(2)}
+                      </div>
+                      <div style={{ color: MUTED, fontSize: 12 }}>
+                        {p.delivery || "Fast shipping"}
+                      </div>
                     </div>
-                  ) : (
-                    <div style={{ height: 20 }} />
-                  )}
 
-                  <div className="d-flex gap-2 mt-3">
-                    <Button
-                      variant="primary"
-                      className="flex-grow-1"
-                      onClick={() => onAddToCart(p)}
-                    >
-                      Add to Cart
-                    </Button>
-                    <Button
-                      variant="light"
-                      style={{ border: `1px solid ${LINE}` }}
-                      title="Details"
-                    >
-                      ⓘ
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+                    {p.rating ? (
+                      <div className="mt-1" style={{ color: "#f59e0b" }}>
+                        <StarRow rating={p.rating} />{" "}
+                        <small style={{ color: MUTED }}>
+                          ({p.reviewsCount ?? "—"})
+                        </small>
+                      </div>
+                    ) : (
+                      <div style={{ height: 20 }} />
+                    )}
 
-          {filtered.length === 0 && (
-            <Col xs={12}>
-              <Card
-                className="border-0"
-                style={{
-                  borderRadius: 12,
-                  padding: 22,
-                  textAlign: "center",
-                  background: "#fff",
-                  border: `1px dashed ${LINE}`,
-                }}
-              >
-                No supplies found. Try a different search, brand, or type.
-              </Card>
-            </Col>
-          )}
-        </Row>
-      </Container>
-    </div>
+                    <div className="d-flex gap-2 mt-auto">
+                      <Button
+                        variant="primary"
+                        className="flex-grow-1"
+                        onClick={() => onAddToCart(p)}
+                      >
+                        Add to Cart
+                      </Button>
+                      <Button
+                        variant="light"
+                        style={{ border: `1px solid ${LINE}` }}
+                        title="Details"
+                      >
+                        ⓘ
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+
+            {filtered.length === 0 && (
+              <Col xs={12}>
+                <Card
+                  className="border-0"
+                  style={{
+                    borderRadius: 12,
+                    padding: 22,
+                    textAlign: "center",
+                    background: "#fff",
+                    border: `1px dashed ${LINE}`,
+                  }}
+                >
+                  No supplies found. Try a different search, brand, or type.
+                </Card>
+              </Col>
+            )}
+          </Row>
+        </Container>
+      </div>
+
+      <SupportAndTrust />
+      <LegalFooter />
+    </>
   );
 }
 

@@ -11,6 +11,8 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { FiEye } from "react-icons/fi";
+import CartDrawer from './CartDrawer';
 
 /* ----------------- Helpers ----------------- */
 
@@ -71,6 +73,9 @@ function StarRow({ rating = 0 }) {
 
 const ProductGallery = ({ products, blog, title, subtitle }) => {
   const navigate = useNavigate();
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [lastAdded, setLastAdded] = useState(null);
 
   // Prefer real `products`; else normalize from your `blog`
   const data = useMemo(() => {
@@ -99,6 +104,20 @@ const ProductGallery = ({ products, blog, title, subtitle }) => {
   }, [data, query, selectedCat]);
 
   const goToDetail = (id) => navigate(`/product/${id}`);
+
+  const handleAddToCart = (product) => {
+    setCartItems((prev) => {
+      const idx = prev.findIndex((i) => i.id === product.id);
+      if (idx > -1) {
+        const updated = [...prev];
+        updated[idx].qty += 1;
+        return updated;
+      }
+      return [...prev, { ...product, qty: 1 }];
+    });
+    setLastAdded(product);
+    setCartOpen(true);
+  };
 
   return (
     <div style={{ background: "#f6f8fb" }}>
@@ -161,8 +180,10 @@ const ProductGallery = ({ products, blog, title, subtitle }) => {
                   boxShadow: "0 6px 18px rgba(16, 38, 76, 0.06)",
                   overflow: "hidden",
                   background: "#fff",
+                  minHeight: 420,
                   height: "100%",
                   display: "flex",
+                  flexDirection: "column",
                   cursor: "pointer",
                 }}
               >
@@ -184,7 +205,7 @@ const ProductGallery = ({ products, blog, title, subtitle }) => {
                   />
                 </div>
 
-                <Card.Body style={{ display: "flex", flexDirection: "column" }}>
+                <Card.Body style={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 180 }}>
                   <Card.Title style={{ fontSize: 18, color: "#0b1b33" }}>
                     {p.title}
                   </Card.Title>
@@ -217,16 +238,16 @@ const ProductGallery = ({ products, blog, title, subtitle }) => {
                     <small>2–3 business days delivery</small>
                   </div>
 
-                  <div className="d-flex align-items-center gap-2 mt-3">
+                  <div className="d-flex align-items-center gap-2 mt-auto">
                     <Button
                       className="flex-grow-1"
                       variant="primary"
                       onClick={(e) => {
                         e.stopPropagation();
-                        goToDetail(p.id);
+                        handleAddToCart(p);
                       }}
                     >
-                      View Details
+                      Add to Cart
                     </Button>
                     <Button
                       variant="light"
@@ -235,9 +256,9 @@ const ProductGallery = ({ products, blog, title, subtitle }) => {
                         e.stopPropagation();
                         goToDetail(p.id);
                       }}
-                      aria-label="More info"
+                      aria-label="View product"
                     >
-                      ⓘ
+                      <FiEye />
                     </Button>
                   </div>
                 </Card.Body>
@@ -262,6 +283,13 @@ const ProductGallery = ({ products, blog, title, subtitle }) => {
           )}
         </Row>
       </Container>
+
+      <CartDrawer
+        show={cartOpen}
+        onHide={() => setCartOpen(false)}
+        cartItems={cartItems}
+        onCheckout={() => alert('Proceeding to checkout...')}
+      />
     </div>
   );
 };

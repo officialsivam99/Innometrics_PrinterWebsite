@@ -1,0 +1,193 @@
+// src/components/laserProducts.js
+import { FiEye } from "react-icons/fi";
+
+export let LaserProducts = [
+  {
+    id: 601,
+    title: "HP LaserJet Pro M404dn (Monochrome)",
+    description:
+      "Reliable and fast mono laser printer designed for high-volume office printing with auto 2-sided output.",
+    image:
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06288639.png",
+    images: [
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06288639.png",
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06288640.png",
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06288641.png",
+    ],
+    price: 249.99,
+    rating: 4.6,
+    reviewsCount: 1800,
+    category: "laser-printer",
+    delivery: "2–4 business days delivery",
+    highlights: [
+      "Mono laser up to 40 ppm",
+      "Auto 2-sided printing",
+      "Sharp 1200 × 1200 dpi text",
+      "USB & Ethernet connectivity",
+      "Compact footprint for desks",
+    ],
+    boxItems: [
+      "Laser printer",
+      "Introductory toner cartridge",
+      "Power cord",
+      "USB cable",
+      "Documentation",
+    ],
+    specs: {
+      "Print Technology": "Mono Laser",
+      "Max Print Resolution": "1200 × 1200 dpi",
+      "Black Print Speed": "Up to 40 ppm",
+      "Color Print Speed": "—",
+      Scanner: "— (print only)",
+      Connectivity: "USB, Ethernet",
+      "Mobile Print": "AirPrint, Mopria",
+      "Paper Handling": "250-sheet input, 150-sheet output",
+      Duplex: "Automatic (Print)",
+      "Dimensions (W×D×H)": "15.0 × 14.0 × 8.5 in",
+      Weight: "18.9 lb",
+    },
+    compatibility: ["Windows 11/10", "macOS 12+", "ChromeOS"],
+  },
+
+  {
+    id: 602,
+    title: "HP LaserJet Pro MFP M428fdw (Monochrome AIO)",
+    description:
+      "All-in-one mono laser for teams: fast printing plus scan/copy/fax with ADF and auto duplex.",
+    image:
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06450708.png",
+    images: [
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06450708.png",
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06450709.png",
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06450710.png",
+    ],
+    price: 449.99,
+    rating: 4.7,
+    reviewsCount: 2300,
+    category: "laser-printer",
+    delivery: "2–4 business days delivery",
+    highlights: [
+      "Print, scan, copy, fax",
+      "Up to 40 ppm mono",
+      "50-sheet ADF, duplex print/scan",
+      "Wi-Fi, Ethernet, USB",
+      "Secure & fleet-ready features",
+    ],
+    boxItems: [
+      "Laser MFP",
+      "Introductory toner",
+      "Power cord",
+      "USB cable",
+      "Phone cord (fax)",
+      "Setup guide",
+    ],
+    specs: {
+      "Print Technology": "Mono Laser",
+      "Max Print Resolution": "1200 × 1200 dpi",
+      "Black Print Speed": "Up to 40 ppm",
+      "Color Print Speed": "—",
+      Scanner: "Flatbed + ADF (1200 dpi)",
+      Connectivity: "Wi-Fi, Wi-Fi Direct, USB, Ethernet",
+      "Mobile Print": "AirPrint, Mopria, HP Smart App",
+      "Paper Handling": "250-sheet input, 150-sheet output",
+      Duplex: "Auto (Print/Scan)",
+      "Dimensions (W×D×H)": "16.5 × 15.4 × 12.7 in",
+      Weight: "27.8 lb",
+    },
+    compatibility: ["Windows 11/10", "macOS 12+", "ChromeOS", "iOS / Android"],
+  },
+
+  {
+    id: 603,
+    title: "HP Color LaserJet Pro M283fdw (Color AIO)",
+    description:
+      "Compact color laser all-in-one with vivid graphics, auto duplex, and wireless networking.",
+    image:
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06455136.png",
+    images: [
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06455136.png",
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06455137.png",
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06455138.png",
+    ],
+    price: 439.99,
+    rating: 4.5,
+    reviewsCount: 1600,
+    category: "color-laser-printer",
+    delivery: "2–4 business days delivery",
+    highlights: [
+      "Color laser AIO",
+      "Auto 2-sided printing",
+      "35-sheet ADF",
+      "Wi-Fi, Ethernet, USB",
+      "Touchscreen controls",
+    ],
+    boxItems: [
+      "Color Laser MFP",
+      "Introductory CMYK toners",
+      "Power cord",
+      "USB cable",
+      "Documentation",
+    ],
+    specs: {
+      "Print Technology": "Color Laser",
+      "Max Print Resolution": "600 × 600 dpi (enhanced)",
+      "Black Print Speed": "Up to 22 ppm",
+      "Color Print Speed": "Up to 22 ppm",
+      Scanner: "Flatbed + ADF",
+      Connectivity: "Wi-Fi, Wi-Fi Direct, USB, Ethernet",
+      "Mobile Print": "AirPrint, Mopria, HP Smart App",
+      "Paper Handling": "250-sheet input, 100-sheet output",
+      Duplex: "Automatic (Print)",
+      "Dimensions (W×D×H)": "16.5 × 16.6 × 13.2 in",
+      Weight: "41.2 lb",
+    },
+    compatibility: ["Windows 11/10", "macOS 12+", "ChromeOS", "iOS / Android"],
+  },
+
+  {
+    id: 604,
+    title: "HP Color LaserJet Pro M255dw (Color, Print Only)",
+    description:
+      "Fast color laser prints with auto duplex in a compact, simple print-only design.",
+    image:
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06456688.png",
+    images: [
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06456688.png",
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06456689.png",
+    ],
+    price: 299.99,
+    rating: 4.4,
+    reviewsCount: 950,
+    category: "color-laser-printer",
+    delivery: "2–4 business days delivery",
+    highlights: [
+      "Color print up to 22 ppm",
+      "Auto 2-sided printing",
+      "Wi-Fi & Ethernet",
+      "Compact, easy to place",
+      "High-yield toner options",
+    ],
+    boxItems: [
+      "Color Laser Printer",
+      "Introductory CMYK toners",
+      "Power cord",
+      "USB cable",
+      "Setup guide",
+    ],
+    specs: {
+      "Print Technology": "Color Laser",
+      "Max Print Resolution": "600 × 600 dpi (enhanced)",
+      "Black Print Speed": "Up to 22 ppm",
+      "Color Print Speed": "Up to 22 ppm",
+      Scanner: "— (print only)",
+      Connectivity: "Wi-Fi, Wi-Fi Direct, USB, Ethernet",
+      "Mobile Print": "AirPrint, Mopria",
+      "Paper Handling": "250-sheet input, 100-sheet output",
+      Duplex: "Automatic (Print)",
+      "Dimensions (W×D×H)": "15.4 × 16.5 × 9.9 in",
+      Weight: "29.8 lb",
+    },
+    compatibility: ["Windows 11/10", "macOS 12+", "ChromeOS", "iOS / Android"],
+  },
+];
+

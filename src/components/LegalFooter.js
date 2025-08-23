@@ -3,7 +3,7 @@ import React from "react";
 import { FiAlertTriangle, FiMapPin } from "react-icons/fi";
 
 const LegalFooter = ({
-  company = "Ink & Paper Express",
+  company = "Print Mate Online",
   year = new Date().getFullYear(),
   address = "1207 Delaware Ave, Suite 3137, Wilmington, DE 19806, United States",
 }) => {

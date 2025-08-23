@@ -8,7 +8,7 @@ import "./css/style.css";
 import "./css/all.min.css";
 
 import Header from "./components/header";
-import Footer from "./components/footer";
+
 import HomePrinter from "./components/HomePrinter";
 
 import Hero from "./components/hero";
@@ -25,28 +25,39 @@ import FAQ from "./components/FAQ";
 import SupportAndTrust from "./components/SupportAndTrust";
 import LegalFooter from "./components/LegalFooter";
 import InkTonerPaper from "./components/InkTonerPaper"; // Assuming you have this component
+import OfficePrinters from "./components/OfficePrinters"; // Import the OfficePrinters component
+import InkjetPrinter from "./components/InkJetPrinters"; 
+import LaserPrinter from "./components/LaserPrinters";// Import the InkjetPrinter component
+import ProductDetail from "./components/ProductDetail";
+import { LaserProducts } from "./components/LaserProducts";
 
 export default function App() {
   return (
     <>
       <Header />
-
-      <Hero />
-      <WhyChoose />
-      <ShopByCategory />
-      <ProductGallery products={products} />
-      <InkSuppliesShowcase />
-      <ChooseUs />
-      <CustomerReviews />
-      <FAQ />
-      <SupportAndTrust />
-      <LegalFooter />
-
-      <Footer />
       <Routes>
+        <Route path="/" element={
+          <>
+            <Hero />
+            <WhyChoose />
+            <ShopByCategory />
+            <ProductGallery products={products} />
+            <InkSuppliesShowcase />
+            <ChooseUs />
+            <CustomerReviews />
+            <FAQ />
+            <SupportAndTrust />
+          </>
+        } />
         <Route path="/HomePrinter" element={<HomePrinter />} />
         <Route path="/InkTonerPaper" element={<InkTonerPaper />} />
+        <Route path="/OfficePrinters" element={<OfficePrinters />} />
+        <Route path="/InkJetPrinters" element={<InkjetPrinter />} />
+        <Route path="/LaserPrinters" element={<LaserPrinter />} />
+        <Route path="/product/:id" element={<ProductDetail products={LaserProducts} />} />
+        {/* Add other routes as needed */}
       </Routes>
+      <LegalFooter />
     </>
   );
 }

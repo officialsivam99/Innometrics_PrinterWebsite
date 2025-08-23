@@ -1,6 +1,7 @@
 import Header from '../components/header'
-import Footer from '../components/footer'
+
 import Eachpart from "../components/eachpart";
+import LegalFooter from '../components/LegalFooter';
 import './about.css'
 // [Script] => Import all imgs from assets From importingScript file
 import { images } from '../components/importingScript';
@@ -45,7 +46,8 @@ const About = ({page}) => {
           </div>
         </div>
       </div>
-      <Footer />
+      
+      <LegalFooter />
     </>
   );
 }

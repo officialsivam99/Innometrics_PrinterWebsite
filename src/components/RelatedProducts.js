@@ -38,18 +38,20 @@ const RelatedProducts = ({ products = [], currentId, currentCategory }) => {
           {items.map((p) => (
             <Col key={p.id} xs={12} sm={6} lg={3}>
               <Card
-                className="h-100 related-card"
+                className="h-100 related-card d-flex flex-column"
                 style={{
                   borderRadius: 16,
                   border: "1px solid #e7ecf3",
                   overflow: "hidden",
                   boxShadow: "0 6px 18px rgba(16,38,76,.06)",
+                  minHeight: 380,
+                  display: "flex"
                 }}
               >
                 <div
                   style={{
                     background: "#f7fafc",
-                    minHeight: 260,
+                    minHeight: 180,
                     display: "grid",
                     placeItems: "center",
                     padding: 12,
@@ -62,12 +64,12 @@ const RelatedProducts = ({ products = [], currentId, currentCategory }) => {
                     loading="lazy"
                   />
                 </div>
-                <Card.Body>
+                <Card.Body className="d-flex flex-column" style={{ flex: 1, minHeight: 160 }}>
                   <Card.Title style={{ fontSize: 18, color: "#0b1b33" }}>
                     {p.title}
                   </Card.Title>
 
-                  <div className="d-flex align-items-center justify-content-between mt-3">
+                  <div className="d-flex align-items-center justify-content-between mt-auto">
                     <div style={{ fontWeight: 800, fontSize: 20 }}>
                       ${p.price?.toFixed ? p.price.toFixed(2) : p.price}
                     </div>

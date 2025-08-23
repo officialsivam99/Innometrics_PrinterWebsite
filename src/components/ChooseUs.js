@@ -34,7 +34,7 @@ const ChooseUs = () => {
       <div className="wc-container">
         <header className="wc-head">
           <h2 id="why-choose-title" className="wc-title">
-            Why Choose Ink & Paper Express?
+            Why Choose Print Mate Online?
           </h2>
           <p className="wc-sub">
             Looking for a wireless <strong>home printer</strong> that actually connects without a headache?

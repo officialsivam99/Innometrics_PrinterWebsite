@@ -19,12 +19,12 @@ import {
  * Props allow customizing text/links, but sensible defaults are provided.
  */
 const SupportAndTrust = ({
-  brand = "Ink & Paper Express",
+  brand = "Print Mate Online",
   tagline = "Your trusted partner for fast Printer & Ink supplies delivery.",
   happyCopy = "500+ Happy Customers",
   happyNote = "Trusted nationwide",
   phone = "833-551-6033",
-  email = "info@inkandpaperexpress.com",
+  email = "info@printmateonline.com",
   hours = "24/7 Support",
   onRoute = (href) => (window.location.href = href), // simple default router
 }) => {
@@ -56,9 +56,9 @@ const SupportAndTrust = ({
       icon: <FiInfo size={18} />,
       links: [
         { label: "About Us", href: "/about" },
-        { label: "Privacy Policy", href: "/legal/privacy" },
-        { label: "Terms & Conditions", href: "/legal/terms" },
-        { label: "Refund Policy", href: "/legal/refund" },
+        { label: "Privacy Policy", href: "/privacy" },
+        { label: "Terms & Conditions", href: "/terms" },
+        { label: "Refund Policy", href: "/refund" },
       ],
     },
   ];

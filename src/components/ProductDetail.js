@@ -38,6 +38,11 @@ import {
 // Info/tabs + related
 import ProductInfoSection from "./ProductInfoSection";
 import RelatedProducts from "./RelatedProducts";
+import Header from "./header";
+import SupportAndTrust from "./SupportAndTrust";
+import LegalFooter from "./LegalFooter";
+import CartDrawer from "./CartDrawer";
+import CheckoutSteps from "./CheckoutSteps";
 
 /* ---------- Helpers ---------- */
 function toTitleCase(str = "") {
@@ -160,6 +165,29 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
 
   const [activeImg, setActiveImg] = useState(0);
   const [qty, setQty] = useState(1);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [lastAdded, setLastAdded] = useState(null);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+
+  const handleAddToCart = (product) => {
+    setCartItems((prev) => {
+      const idx = prev.findIndex((i) => i.id === product.id);
+      if (idx > -1) {
+        const updated = [...prev];
+        updated[idx].qty += 1;
+        return updated;
+      }
+      return [...prev, { ...product, qty: 1 }];
+    });
+    setLastAdded(product);
+    setCartOpen(true);
+  };
+
+  const handleCheckout = () => {
+    setCartOpen(false);
+    setCheckoutOpen(true);
+  };
 
   if (!resolved) {
     return (
@@ -211,6 +239,7 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
 
   return (
     <>
+      <Header />
       <div style={{ background: "#fff" }}>
         <Container style={{ paddingTop: 24, paddingBottom: 48 }}>
           {/* Breadcrumb / Back */}
@@ -545,6 +574,7 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
                       justifyContent: "center",
                       gap: 10,
                     }}
+                    onClick={() => handleAddToCart(resolved)}
                   >
                     <FiShoppingCart />
                     Add to Cart
@@ -637,7 +667,63 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
         currentId={resolved.id}
         currentCategory={resolved.category}
       />
-      
+      <SupportAndTrust />
+      <LegalFooter />
+
+      <CartDrawer
+        show={cartOpen}
+        onHide={() => setCartOpen(false)}
+        cartItems={cartItems}
+        onCheckout={handleCheckout}
+      />
+
+      {checkoutOpen && (
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "#f7f8fb", zIndex: 9999, overflowY: "auto" }}>
+          <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "row", alignItems: "stretch", justifyContent: "center" }}>
+            {/* Left: Steps and forms */}
+            <div style={{ flex: 2, minWidth: 0, padding: "48px 32px 48px 64px", background: "#fff", boxShadow: "0 0 32px rgba(16,38,76,.08)", borderRadius: "0 24px 24px 0", position: "relative" }}>
+              <button
+                style={{ position: "absolute", top: 32, right: 32, background: "none", border: "none", fontSize: 22, color: "#245af0", cursor: "pointer" }}
+                onClick={() => setCheckoutOpen(false)}
+                aria-label="Close checkout"
+              >✕</button>
+              <h2 className="fw-bold mb-4" style={{ color: "#245af0" }}>Checkout</h2>
+              <CheckoutSteps cartItems={cartItems} onOrderPlaced={() => setCheckoutOpen(false)} />
+            </div>
+            {/* Right: Order summary sidebar */}
+            <div style={{ flex: 1, minWidth: 340, maxWidth: 420, background: "#f7f8fb", borderLeft: "1px solid #e5e7eb", padding: "48px 32px", display: "flex", flexDirection: "column", justifyContent: "flex-start" }}>
+              <h4 style={{ color: "#245af0", fontWeight: 700, marginBottom: 24 }}>Order Summary</h4>
+              <ul className="list-group mb-3">
+                {cartItems.map((item) => (
+                  <li key={item.id} className="list-group-item d-flex align-items-center gap-3" style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 8, marginBottom: 8 }}>
+                    <img src={item.image} alt={item.title} style={{ width: 48, height: 32, objectFit: 'cover', borderRadius: 6, border: '1px solid #e5e7eb' }} />
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 700 }}>{item.title}</div>
+                      <div style={{ color: "#64748b" }}>Qty: {item.qty}</div>
+                    </div>
+                    <div style={{ fontWeight: 700, color: "#245af0" }}>₹{item.price * item.qty}</div>
+                  </li>
+                ))}
+              </ul>
+              <div className="mb-3 p-3" style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb' }}>
+                <div className="d-flex justify-content-between"><span>Subtotal</span><span>₹{cartItems.reduce((sum, i) => sum + i.price * i.qty, 0)}</span></div>
+                <div className="d-flex justify-content-between"><span>Shipping</span><span>{cartItems.reduce((sum, i) => sum + i.price * i.qty, 0) > 999 ? 'Free' : `₹49`}</span></div>
+                <div className="d-flex justify-content-between"><span>Tax (12%)</span><span>₹{Math.round(cartItems.reduce((sum, i) => sum + i.price * i.qty, 0) * 0.12)}</span></div>
+                <div className="d-flex justify-content-between fw-bold"><span>Total</span><span>₹{cartItems.reduce((sum, i) => sum + i.price * i.qty, 0) + (cartItems.reduce((sum, i) => sum + i.price * i.qty, 0) > 999 ? 0 : 49) + Math.round(cartItems.reduce((sum, i) => sum + i.price * i.qty, 0) * 0.12)}</span></div>
+              </div>
+              <div className="mb-2" style={{ color: '#64748b', fontSize: 13 }}>
+                <span>Seller: </span><span style={{ color: '#245af0', fontWeight: 600 }}>Print Mate Online</span>
+                <span className="ms-2">| Support: <a href="tel:8335516033" style={{ color: '#22c55e', textDecoration: 'none' }}>833-551-6033</a></span>
+              </div>
+              <div style={{ marginTop: 32, color: '#64748b', fontSize: 13 }}>
+                <div>✓ Secure checkout guaranteed</div>
+                <div>✓ 30-day easy returns</div>
+                <div>✓ Fast & reliable shipping</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

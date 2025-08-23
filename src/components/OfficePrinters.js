@@ -1,10 +1,6 @@
-// src/pages/home-printer.jsx
+// src/pages/office-printer.jsx
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import HomePrinterGuide from "./HomePrinterGuide"; // Assuming you have a guide component
-import Header from './header';
-import SupportAndTrust from './SupportAndTrust';
-import LegalFooter from './LegalFooter';
 import {
   Container,
   Row,
@@ -13,7 +9,6 @@ import {
   Badge,
   Form,
   InputGroup,
-  Button,
 } from "react-bootstrap";
 import {
   FiHome,
@@ -23,10 +18,14 @@ import {
   FiSliders,
   FiArrowRight,
 } from "react-icons/fi";
-import { TbWifi, TbAdjustmentsBolt, TbRocket } from "react-icons/tb";
-import { products as allProducts } from "./products";
+import { TbBriefcase, TbPrinter, TbNetwork } from "react-icons/tb";
+import { OfficeProducts as allOfficeProducts } from "../components/OfficeProducts";
+import Header from "./header";
+import SupportAndTrust from "./SupportAndTrust";
+import LegalFooter from "./LegalFooter";
+import CartDrawer from "./CartDrawer";
 
-/* tiny star row (same visual language as your other pages) */
+/* Tiny star row */
 function StarRow({ rating = 0 }) {
   const full = Math.floor(rating);
   const half = rating - full >= 0.5;
@@ -45,25 +44,28 @@ function StarRow({ rating = 0 }) {
   );
 }
 
-/* ——————————————————————————————————————————————— */
-/*                    Home Printer page              */
-/* ——————————————————————————————————————————————— */
+export default function OfficePrinters() {
+  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState("name-asc");
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [lastAdded, setLastAdded] = useState(null);
 
-export default function HomePrinter() {
-  // Treat these categories as “home printer” relevant
-  const HOME_CATS = new Set(["home-printer", "inkjet-printer"]);
-
-  // Pull relevant items from your dataset
+  // filter: only actual printers, not ink/paper
   const base = useMemo(
-    () => allProducts.filter((p) => HOME_CATS.has(p.category)),
+    () =>
+      allOfficeProducts.filter(
+        (p) =>
+          p.category ||
+          p.type === "ink" ||
+          p.type === "toner" ||
+          p.type === "paper"
+            ? p.category
+            : null
+      ),
     []
   );
 
-  // UI state
-  const [query, setQuery] = useState("");
-  const [sort, setSort] = useState("name-asc");
-
-  // Sorting logic
   const sorted = useMemo(() => {
     const data = [...base].filter((p) => {
       if (!query) return true;
@@ -88,6 +90,20 @@ export default function HomePrinter() {
     }
   }, [base, query, sort]);
 
+  const handleAddToCart = (product) => {
+    setCartItems((prev) => {
+      const idx = prev.findIndex((i) => i.id === product.id);
+      if (idx > -1) {
+        const updated = [...prev];
+        updated[idx].qty += 1;
+        return updated;
+      }
+      return [...prev, { ...product, qty: 1 }];
+    });
+    setLastAdded(product);
+    setCartOpen(true);
+  };
+
   return (
     <>
       <Header />
@@ -108,7 +124,9 @@ export default function HomePrinter() {
               Home
             </Link>
             <FiChevronRight />
-            <span style={{ color: "#0b1b33", fontWeight: 600 }}>Home Printer</span>
+            <span style={{ color: "#0b1b33", fontWeight: 600 }}>
+              Office Printers
+            </span>
           </div>
 
           {/* Hero / Intro */}
@@ -131,38 +149,32 @@ export default function HomePrinter() {
                 marginBottom: 12,
               }}
             >
-              Best Home Printers
+              Best Office Printers
             </h1>
-
             <p style={{ color: "#374151", fontSize: 18, maxWidth: 980 }}>
-              Discover the perfect household printer for your home office needs.
-              Browse our collection of{" "}
-              <a href="#wireless" style={{ fontWeight: 700 }}>
-                wireless all-in-one printers
+              Shop high-performance printers built for office productivity. Browse{" "}
+              <a href="#laser" style={{ fontWeight: 700 }}>
+                laser printers
               </a>
               ,{" "}
-              <a href="#compact" style={{ fontWeight: 700 }}>
-                compact inkjet models
+              <a href="#multifunction" style={{ fontWeight: 700 }}>
+                multifunction inkjets
               </a>
               , and{" "}
-              <a href="#reliable" style={{ fontWeight: 700 }}>
-                reliable home office solutions
+              <a href="#network" style={{ fontWeight: 700 }}>
+                network-ready solutions
               </a>{" "}
-              with fast shipping and expert support.
+              designed for teams and businesses.
             </p>
-
-            {/* Feature highlights */}
             <Row className="g-3 mt-1">
               <Col md={4}>
-                <Card
-                  style={{
-                    borderRadius: 14,
-                    border: "1px solid #e7ecf3",
-                    background: "#fff",
-                  }}
-                >
+                <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3" }}>
                   <Card.Body
-                    style={{ display: "flex", gap: 12, alignItems: "flex-start" }}
+                    style={{
+                      display: "flex",
+                      gap: 12,
+                      alignItems: "flex-start",
+                    }}
                   >
                     <span
                       style={{
@@ -175,30 +187,27 @@ export default function HomePrinter() {
                         color: "#2563eb",
                       }}
                     >
-                      <TbWifi size={20} />
+                      <TbPrinter size={20} />
                     </span>
                     <div>
-                      <div id="wireless" style={{ fontWeight: 800 }}>
-                        Wireless & Compact
+                      <div id="laser" style={{ fontWeight: 800 }}>
+                        Laser Precision
                       </div>
                       <div style={{ color: "#6b7280" }}>
-                        Space-saving designs perfect for home offices.
+                        Crisp text & high-speed printing.
                       </div>
                     </div>
                   </Card.Body>
                 </Card>
               </Col>
-
               <Col md={4}>
-                <Card
-                  style={{
-                    borderRadius: 14,
-                    border: "1px solid #e7ecf3",
-                    background: "#fff",
-                  }}
-                >
+                <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3" }}>
                   <Card.Body
-                    style={{ display: "flex", gap: 12, alignItems: "flex-start" }}
+                    style={{
+                      display: "flex",
+                      gap: 12,
+                      alignItems: "flex-start",
+                    }}
                   >
                     <span
                       style={{
@@ -211,28 +220,27 @@ export default function HomePrinter() {
                         color: "#10b981",
                       }}
                     >
-                      <TbAdjustmentsBolt size={20} />
+                      <TbBriefcase size={20} />
                     </span>
                     <div>
-                      <div style={{ fontWeight: 800 }}>All-in-One</div>
+                      <div id="multifunction" style={{ fontWeight: 800 }}>
+                        All-in-One Solutions
+                      </div>
                       <div style={{ color: "#6b7280" }}>
-                        Print, scan & copy in one convenient device.
+                        Print, copy, scan & fax with ease.
                       </div>
                     </div>
                   </Card.Body>
                 </Card>
               </Col>
-
               <Col md={4}>
-                <Card
-                  style={{
-                    borderRadius: 14,
-                    border: "1px solid #e7ecf3",
-                    background: "#fff",
-                  }}
-                >
+                <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3" }}>
                   <Card.Body
-                    style={{ display: "flex", gap: 12, alignItems: "flex-start" }}
+                    style={{
+                      display: "flex",
+                      gap: 12,
+                      alignItems: "flex-start",
+                    }}
                   >
                     <span
                       style={{
@@ -245,14 +253,14 @@ export default function HomePrinter() {
                         color: "#8b5cf6",
                       }}
                     >
-                      <TbRocket size={20} />
+                      <TbNetwork size={20} />
                     </span>
                     <div>
-                      <div id="reliable" style={{ fontWeight: 800 }}>
-                        Easy Setup
+                      <div id="network" style={{ fontWeight: 800 }}>
+                        Network Ready
                       </div>
                       <div style={{ color: "#6b7280" }}>
-                        Quick wireless setup for household use.
+                        Connect teams via Ethernet & Wi-Fi.
                       </div>
                     </div>
                   </Card.Body>
@@ -291,18 +299,11 @@ export default function HomePrinter() {
               </span>
               <div style={{ fontWeight: 700 }}>{sorted.length} Products</div>
               <div style={{ color: "#6b7280" }}>
-                Home & household printing solutions
+                Office & business printing solutions
               </div>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                alignItems: "center",
-                flexWrap: "wrap",
-              }}
-            >
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <InputGroup style={{ width: 260 }}>
                 <InputGroup.Text>
                   <FiSearch />
@@ -331,7 +332,7 @@ export default function HomePrinter() {
             </div>
           </div>
 
-          {/* Product grid */}
+          {/* Product Grid */}
           <Row className="g-4">
             {sorted.map((p) => (
               <Col key={p.id} xs={12} sm={6} lg={4} xl={3}>
@@ -367,19 +368,24 @@ export default function HomePrinter() {
                   </div>
 
                   <Card.Body style={{ display: "flex", flexDirection: "column" }}>
-                    <div
-                      className="d-flex align-items-center justify-content-between"
-                      style={{ marginBottom: 8 }}
-                    >
-                      <Badge bg="light" text="dark" style={{ border: "1px solid #e7ecf3" }}>
-                        {p.category.replace("-", " ")}
-                      </Badge>
+                    <div className="d-flex align-items-center justify-content-between mb-2">
+                      {p.category && (
+                        <Badge
+                          bg="light"
+                          text="dark"
+                          style={{ border: "1px solid #e7ecf3" }}
+                        >
+                          {p.category.replace("-", " ")}
+                        </Badge>
+                      )}
                       <div style={{ fontWeight: 800, fontSize: 18 }}>
                         ${p.price.toFixed(2)}
                       </div>
                     </div>
 
-                    <div style={{ fontWeight: 700, color: "#0b1b33" }}>{p.title}</div>
+                    <div style={{ fontWeight: 700, color: "#0b1b33" }}>
+                      {p.title}
+                    </div>
                     <div style={{ color: "#6b7280", marginTop: 4, minHeight: 44 }}>
                       {p.description}
                     </div>
@@ -390,13 +396,18 @@ export default function HomePrinter() {
                     >
                       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                         <StarRow rating={p.rating} />
-                        <small style={{ color: "#6b7280" }}>({p.reviewsCount})</small>
+                        <small style={{ color: "#6b7280" }}>
+                          ({p.reviewsCount})
+                        </small>
                       </div>
                       <small style={{ color: "#6b7280" }}>🚚 {p.delivery}</small>
                     </div>
 
                     <div className="mt-3">
-                      <Link to={`/product/${p.id}`} className="btn btn-primary w-100">
+                      <Link
+                        to={`/product/${p.id}`}
+                        className="btn btn-primary w-100"
+                      >
                         View Details <FiArrowRight style={{ marginLeft: 6 }} />
                       </Link>
                     </div>
@@ -416,15 +427,21 @@ export default function HomePrinter() {
                     textAlign: "center",
                   }}
                 >
-                  No matching printers. Try another search or sort.
+                  No matching office printers. Try another search or sort.
                 </div>
               </Col>
             )}
           </Row>
         </Container>
-        <HomePrinterGuide/>
+
         <SupportAndTrust />
         <LegalFooter />
+        <CartDrawer
+          show={cartOpen}
+          onHide={() => setCartOpen(false)}
+          cartItems={cartItems}
+          onCheckout={() => alert("Proceeding to checkout...")}
+        />
       </div>
     </>
   );

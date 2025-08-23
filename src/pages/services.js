@@ -1,9 +1,10 @@
 import Header from '../components/header'
-import Footer from '../components/footer'
+
 import Eachpart from "../components/eachpart";
 import './services.css'
 // [Script] => Import all imgs from assets From importingScript file
 import { images } from '../components/importingScript';
+import LegalFooter from '../components/LegalFooter';
 
 
 const Services = () => {
@@ -107,7 +108,8 @@ const Services = () => {
         </div>
       </div>
       {/* services */}
-      <Footer />
+      
+      <LegalFooter />
     </>
   );
 }
