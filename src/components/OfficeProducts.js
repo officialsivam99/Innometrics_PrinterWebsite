@@ -71,7 +71,7 @@ export let OfficeProducts = [
     description:
       "Smart, fast, and efficient wireless color inkjet printer for home office and small business needs.",
     image:
-      "https://hp.widen.net/content/abxnm7602o/webp/abxnm7602o.png?w=573&h=430&dpi=72&color=ffffff00",
+      "https://in-media.apjonlinecdn.com/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/5/3/53N94C-1_T1705462958.png",
     images: [
       "https://hp.widen.net/content/abxnm7602o/webp/abxnm7602o.png?w=573&h=430&dpi=72&color=ffffff00",
       "https://images.hp.com/is/image/hp/officejetpro-9015e-1?$large$",

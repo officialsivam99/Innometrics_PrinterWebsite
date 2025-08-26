@@ -66,7 +66,7 @@ export let products = [
     description:
       "The HP LaserJet M209dw is a compact, efficient mono laser printer crafted for office and business needs.",
     image:
-      "https://hp.widen.net/content/qjavfr6fzz/png/qjavfr6fzz.png?w=800&h=600&dpi=72&color=ffffff00",
+      "https://in-media.apjonlinecdn.com/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/3/8/381U2A-1_T1680352515.png",
     images: [
       "https://hp.widen.net/content/qjavfr6fzz/png/qjavfr6fzz.png?w=800&h=600&dpi=72&color=ffffff00",
       "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06668549.png",
@@ -117,7 +117,7 @@ export let products = [
     description:
       "A compact yet powerful monochrome all-in-one laser printer with wireless capability.",
     image:
-      "https://www.hp.com/ca-en/shop/Html/Merch/Images/c06976583_1750x1285.jpg",
+      "https://in-media.apjonlinecdn.com/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/6/G/6GX06A-1_T1680354305.png",
     images: [
       "https://www.hp.com/ca-en/shop/Html/Merch/Images/c06976583_1750x1285.jpg",
       "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06976583.png",
@@ -168,7 +168,7 @@ export let products = [
     description:
       "The HP ENVY Inspire 7955e is a versatile and family-friendly inkjet printer designed for daily use.",
     image:
-      "https://hp.widen.net/content/muwpvnq8dp/webp/muwpvnq8dp.png?w=573&h=430&dpi=72&color=ffffff00",
+      "https://m.media-amazon.com/images/I/61w+mc-zplL._SL1500_.jpg",
     images: [
       "https://hp.widen.net/content/muwpvnq8dp/webp/muwpvnq8dp.png?w=573&h=430&dpi=72&color=ffffff00",
       "https://images.hp.com/is/image/hp/envy-7955e-1?$large$",
@@ -225,7 +225,7 @@ export let products = [
     description:
       "Smart, fast, and efficient wireless color inkjet printer for home office and small business needs.",
     image:
-      "https://hp.widen.net/content/abxnm7602o/webp/abxnm7602o.png?w=573&h=430&dpi=72&color=ffffff00",
+      "https://in-media.apjonlinecdn.com/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/4/0/404L7C-1_T1705462883.png",
     images: [
       "https://hp.widen.net/content/abxnm7602o/webp/abxnm7602o.png?w=573&h=430&dpi=72&color=ffffff00",
       "https://images.hp.com/is/image/hp/officejetpro-9015e-1?$large$",
@@ -378,7 +378,7 @@ export let products = [
     description:
       "Versatile and family-friendly inkjet printer designed for daily home use, with wireless and mobile printing.",
     image:
-      "https://hp.widen.net/content/muwpvnq8dp/webp/muwpvnq8dp.png?w=573&h=430&dpi=72&color=ffffff00",
+      "https://in-media.apjonlinecdn.com/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/6/U/6UU47A-1_T1680354433.png",
     images: [
       "https://hp.widen.net/content/muwpvnq8dp/webp/muwpvnq8dp.png?w=573&h=430&dpi=72&color=ffffff00",
       "https://images.hp.com/is/image/hp/envy-7955e-1?$large$",
@@ -446,7 +446,7 @@ export let products = [
     description:
       "Original HP tri-color ink for vibrant photos and graphics. XL page yield.",
     image:
-      "https://hp.widen.net/content/uaeyj14kx9/png/uaeyj14kx9.png?w=1659&h=1246&dpi=72&color=ffffff00",
+      "https://m.media-amazon.com/images/I/715Ohdd62gL._SX522_.jpg",
     price: 34.99,
     rating: 4.6,
     reviewsCount: 289,

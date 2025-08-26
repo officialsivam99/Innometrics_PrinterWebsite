@@ -8,7 +8,7 @@ export let LaserProducts = [
     description:
       "Reliable and fast mono laser printer designed for high-volume office printing with auto 2-sided output.",
     image:
-      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06288639.png",
+      "https://in-media.apjonlinecdn.com/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/4/Z/4ZB95A-1_T1680353802.png",
     images: [
       "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06288639.png",
       "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06288640.png",
@@ -55,7 +55,7 @@ export let LaserProducts = [
     description:
       "All-in-one mono laser for teams: fast printing plus scan/copy/fax with ADF and auto duplex.",
     image:
-      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06450708.png",
+      "https://m.media-amazon.com/images/I/71BugEi4asL._SX679_.jpg",
     images: [
       "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06450708.png",
       "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06450709.png",

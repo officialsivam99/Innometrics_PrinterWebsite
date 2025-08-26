@@ -11,7 +11,7 @@ export let InkJetProducts = [
     description:
       "Smart, fast, and efficient wireless color inkjet printer for home office and small business needs.",
     image:
-      "https://hp.widen.net/content/abxnm7602o/webp/abxnm7602o.png?w=573&h=430&dpi=72&color=ffffff00",
+      "https://m.media-amazon.com/images/I/61w+mc-zplL._SX522_.jpg",
     images: [
       "https://hp.widen.net/content/abxnm7602o/webp/abxnm7602o.png?w=573&h=430&dpi=72&color=ffffff00",
       "https://images.hp.com/is/image/hp/officejetpro-9015e-1?$large$",
@@ -105,7 +105,7 @@ export let InkJetProducts = [
     description:
       "Versatile and family-friendly inkjet printer designed for daily home use, with wireless and mobile printing.",
     image:
-      "https://hp.widen.net/content/muwpvnq8dp/webp/muwpvnq8dp.png?w=573&h=430&dpi=72&color=ffffff00",
+      "https://in-media.apjonlinecdn.com/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/4/0/404L7C-1_T1705462883.png",
     images: [
       "https://hp.widen.net/content/muwpvnq8dp/webp/muwpvnq8dp.png?w=573&h=430&dpi=72&color=ffffff00",
       "https://images.hp.com/is/image/hp/envy-7955e-1?$large$",

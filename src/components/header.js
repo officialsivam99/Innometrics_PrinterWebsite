@@ -193,11 +193,7 @@ const Header = () => {
                 Inkjet Printers
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link text-dark p-0" to="/InkJetPrinters">
-                Inkjet Printers
-              </Link>
-            </li>
+            
             <li className="nav-item">
               <Link className="nav-link text-dark p-0" to="/LaserPrinters">
                 Laser Printers
