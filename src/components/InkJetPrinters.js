@@ -1,5 +1,8 @@
 // src/pages/inkjet-printer.jsx
 import React, { useMemo, useState } from "react";
+import Header from "./header";
+import SupportAndTrust from "./SupportAndTrust";
+import LegalFooter from "./LegalFooter";
 import { Link } from "react-router-dom";
 import {
   Container,
@@ -74,30 +77,32 @@ export default function InkjetPrinter() {
   }, [base, query, sort]);
 
   return (
-    <div style={{ background: "#f6f8fb" }}>
-      <Container style={{ paddingTop: 20, paddingBottom: 36 }}>
-        {/* Breadcrumb */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            color: "#6b7280",
-            marginBottom: 10,
-          }}
-        >
-          <FiHome />
-          <Link to="/" style={{ textDecoration: "none" }}>
-            Home
-          </Link>
-          <FiChevronRight />
-          <span style={{ color: "#0b1b33", fontWeight: 600 }}>
-            Inkjet Printers
-          </span>
-        </div>
+    <>
+      <Header />
+      <div style={{ background: "#f6f8fb" }}>
+        <Container style={{ paddingTop: 20, paddingBottom: 36 }}>
+          {/* Breadcrumb */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              color: "#6b7280",
+              marginBottom: 10,
+            }}
+          >
+            <FiHome />
+            <Link to="/" style={{ textDecoration: "none" }}>
+              Home
+            </Link>
+            <FiChevronRight />
+            <span style={{ color: "#0b1b33", fontWeight: 600 }}>
+              Inkjet Printers
+            </span>
+          </div>
 
-        {/* Hero / Intro */}
-        <div
+          {/* Hero / Intro */}
+          <div
           style={{
             border: "1px solid #dbe7ff",
             background:
@@ -372,6 +377,9 @@ export default function InkjetPrinter() {
           )}
         </Row>
       </Container>
+      <SupportAndTrust />
+      <LegalFooter />
     </div>
+    </>
   );
 }
