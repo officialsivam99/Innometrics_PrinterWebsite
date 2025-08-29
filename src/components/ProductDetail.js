@@ -35,7 +35,6 @@ import {
   TbDeviceFloppy,
 } from "react-icons/tb";
 
-// Info/tabs + related
 import ProductInfoSection from "./ProductInfoSection";
 import RelatedProducts from "./RelatedProducts";
 import Header from "./header";
@@ -44,7 +43,10 @@ import LegalFooter from "./LegalFooter";
 import CartDrawer from "./CartDrawer";
 import CheckoutSteps from "./CheckoutSteps";
 
-/* ---------- Helpers ---------- */
+/* ---------- Tiny helpers ---------- */
+const formatMoney = (n, currency = "INR", locale = "en-IN") =>
+  new Intl.NumberFormat(locale, { style: "currency", currency, maximumFractionDigits: 2 }).format(n ?? 0);
+
 function toTitleCase(str = "") {
   return str
     .split(" ")
@@ -56,12 +58,12 @@ function sentenceCase(str = "") {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 }
 
-// BLOG -> Product normalizer
+/* ---------- BLOG -> Product normalizer ---------- */
 function normalizeBlogItem(item, i = 0) {
   const price = Number(
     (100 + (i % 15) * 7 + (item.userId % 3) * 12 + 0.99).toFixed(2)
   );
-  const rating = Number((3.8 + (item.id % 12) / 20).toFixed(1)); // 3.8–4.4
+  const rating = Number((3.8 + (item.id % 12) / 20).toFixed(1));
   const reviewsCount = 100 + (item.id % 50);
   const image = `https://picsum.photos/seed/printer-${item.id}/900/620`;
   return {
@@ -84,7 +86,6 @@ function normalizeBlogItem(item, i = 0) {
     stock: 60,
     badge: rating >= 4.7 ? "Best Seller" : undefined,
     features: defaultFeatures,
-    // Provide defaults for the info tabs
     highlights: [
       "Print, scan, copy functionality",
       "Wireless & mobile printing support",
@@ -96,7 +97,6 @@ function normalizeBlogItem(item, i = 0) {
       Connectivity: "Wi-Fi, USB",
     },
     compatibility: ["Windows 11/10", "macOS 12+"],
-    // ✅ default category so RelatedProducts can group properly
     category: "inkjet-printer",
   };
 }
@@ -105,7 +105,7 @@ function StarRow({ rating = 0 }) {
   const full = Math.floor(rating);
   const half = rating - full >= 0.5;
   return (
-    <span aria-label={`Rating ${rating} out of 5`} style={{ color: "#f59e0b" }}>
+    <span aria-label={`Rating ${rating} out of 5`} style={{ color: "#f59e0b", whiteSpace: "nowrap" }}>
       {[...Array(5)].map((_, i) => {
         if (i < full) return <span key={i}>★</span>;
         if (i === full && half) return <span key={i}>☆</span>;
@@ -135,13 +135,6 @@ const defaultFeatures = [
   { icon: <TbDropletHalf2 />, label: "Ink Efficient" },
 ];
 
-/**
- * Props:
- * - product?: product object
- * - productId?: id to lookup inside `products`/`blog`
- * - products?: array of product-shaped items
- * - blog?: array (we'll normalize item by id)
- */
 const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
   const { id: routeId } = useParams();
   const navigate = useNavigate();
@@ -150,13 +143,9 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
   const resolved = useMemo(() => {
     if (product) return withDefaults(product);
     if (idToUse != null) {
-      const fromProducts = products.find(
-        (p) => String(p.id) === String(idToUse)
-      );
+      const fromProducts = products.find((p) => String(p.id) === String(idToUse));
       if (fromProducts) return withDefaults(fromProducts);
-      const indexInBlog = blog.findIndex(
-        (b) => String(b.id) === String(idToUse)
-      );
+      const indexInBlog = blog.findIndex((b) => String(b.id) === String(idToUse));
       if (indexInBlog !== -1)
         return withDefaults(normalizeBlogItem(blog[indexInBlog], indexInBlog));
     }
@@ -170,17 +159,17 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
   const [lastAdded, setLastAdded] = useState(null);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (prod, count = 1) => {
     setCartItems((prev) => {
-      const idx = prev.findIndex((i) => i.id === product.id);
+      const idx = prev.findIndex((i) => i.id === prod.id);
       if (idx > -1) {
         const updated = [...prev];
-        updated[idx].qty += 1;
+        updated[idx].qty = Math.min(99, updated[idx].qty + count);
         return updated;
       }
-      return [...prev, { ...product, qty: 1 }];
+      return [...prev, { ...prod, qty: Math.max(1, count) }];
     });
-    setLastAdded(product);
+    setLastAdded(prod);
     setCartOpen(true);
   };
 
@@ -196,35 +185,18 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
           <Button
             variant="link"
             onClick={() => navigate(-1)}
-            style={{
-              paddingLeft: 0,
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-            }}
+            style={{ paddingLeft: 0, display: "inline-flex", alignItems: "center", gap: 6 }}
           >
             <FiChevronLeft />
             Back
           </Button>
-          <Card
-            style={{
-              marginTop: 12,
-              borderRadius: 14,
-              border: "1px solid #e7ecf3",
-              background: "#fff",
-              padding: 18,
-            }}
-          >
+          <Card style={{ marginTop: 12, borderRadius: 14, border: "1px solid #e7ecf3", background: "#fff", padding: 18 }}>
             <h2 className="fw-bold" style={{ margin: 0, color: "#0b1b33" }}>
               Product not found
             </h2>
             <p style={{ margin: "8px 0 0", color: "#64748b" }}>
               The item you’re looking for doesn’t exist or is unavailable.{" "}
-              <Button
-                variant="link"
-                onClick={() => navigate("/")}
-                style={{ paddingLeft: 0 }}
-              >
+              <Button variant="link" onClick={() => navigate("/")} style={{ paddingLeft: 0 }}>
                 Go back to products
               </Button>
             </p>
@@ -240,6 +212,22 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
   return (
     <>
       <Header />
+
+      {/* Scoped CSS to keep layout consistent */}
+      <style>{`
+        .pd-title {
+          font-size: 40px; line-height: 1.15; font-weight: 800; color: #0b1b33; margin-bottom: 8px;
+          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .pd-img-wrap { background:#f7fafc; padding:22px; display:grid; place-items:center; min-height: 480px; }
+        @media (max-width: 991.98px){ .pd-img-wrap{ min-height: 360px; } }
+        .pd-thumbs { display:grid; grid-template-columns: repeat(6, 1fr); gap:12px; }
+        @media (max-width: 575.98px){ .pd-thumbs{ display:flex; overflow-x:auto; gap:10px; padding-bottom:6px; } }
+        .pd-thumb-btn { background:#fff; border-radius:10px; padding:6px; display:grid; place-items:center; cursor:pointer; }
+        .pd-thumb-btn img { width:100%; height:60px; object-fit:contain; }
+        .pd-sticky { position: sticky; top: 24px; }
+      `}</style>
+
       <div style={{ background: "#fff" }}>
         <Container style={{ paddingTop: 24, paddingBottom: 48 }}>
           {/* Breadcrumb / Back */}
@@ -247,13 +235,7 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
             <Button
               variant="link"
               onClick={() => navigate(-1)}
-              style={{
-                paddingLeft: 0,
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                textDecoration: "none",
-              }}
+              style={{ paddingLeft: 0, display: "inline-flex", alignItems: "center", gap: 6, textDecoration: "none" }}
             >
               <FiChevronLeft />
               Back to products
@@ -263,92 +245,39 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
           <Row className="g-4">
             {/* Left: Image gallery */}
             <Col lg={7}>
-              <Card
-                style={{
-                  borderRadius: 14,
-                  border: "1px solid #e7ecf3",
-                  boxShadow: "0 10px 24px rgba(16,38,76,.06)",
-                  overflow: "hidden",
-                }}
-              >
-                <div
-                  style={{
-                    background: "#f7fafc",
-                    padding: 22,
-                    display: "grid",
-                    placeItems: "center",
-                    minHeight: 440,
-                  }}
-                >
+              <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3", boxShadow: "0 10px 24px rgba(16,38,76,.06)", overflow: "hidden" }}>
+                <div className="pd-img-wrap">
                   <img
                     key={activeImg}
                     src={resolved.images?.[activeImg] || resolved.image}
                     alt={resolved.title}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      transition: "transform .2s ease",
-                    }}
+                    style={{ width: "100%", height: "100%", objectFit: "contain", transition: "transform .2s ease" }}
                   />
                 </div>
 
                 <Card.Body>
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(6, 1fr)",
-                      gap: 12,
-                    }}
-                  >
-                    {(resolved.images || [resolved.image])
-                      .slice(0, 6)
-                      .map((src, i) => {
-                        const active = i === activeImg;
-                        return (
-                          <button
-                            key={i}
-                            onClick={() => setActiveImg(i)}
-                            className="thumb"
-                            style={{
-                              background: "#fff",
-                              borderRadius: 10,
-                              border: `2px solid ${
-                                active ? "#2563eb" : "#e7ecf3"
-                              }`,
-                              padding: 6,
-                              display: "grid",
-                              placeItems: "center",
-                              cursor: "pointer",
-                              boxShadow: active
-                                ? "0 6px 16px rgba(37,99,235,.2)"
-                                : "none",
-                            }}
-                            aria-label={`Gallery image ${i + 1}`}
-                          >
-                            <img
-                              src={src}
-                              alt={`thumb ${i + 1}`}
-                              style={{
-                                width: "100%",
-                                height: 60,
-                                objectFit: "contain",
-                              }}
-                              loading="lazy"
-                            />
-                          </button>
-                        );
-                      })}
+                  <div className="pd-thumbs" role="listbox" aria-label="Product image thumbnails">
+                    {(resolved.images || [resolved.image]).slice(0, 6).map((src, i) => {
+                      const active = i === activeImg;
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => setActiveImg(i)}
+                          className="pd-thumb-btn thumb"
+                          style={{
+                            border: `2px solid ${active ? "#2563eb" : "#e7ecf3"}`,
+                            boxShadow: active ? "0 6px 16px rgba(37,99,235,.2)" : "none",
+                          }}
+                          aria-label={`Select image ${i + 1}`}
+                          aria-pressed={active}
+                        >
+                          <img src={src} alt={`Thumbnail ${i + 1}`} loading="lazy" />
+                        </button>
+                      );
+                    })}
                   </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 12,
-                      marginTop: 14,
-                      flexWrap: "wrap",
-                    }}
-                  >
+                  <div style={{ display: "flex", gap: 12, marginTop: 14, flexWrap: "wrap" }}>
                     <Button variant="light" style={{ border: "1px solid #e7ecf3" }}>
                       <FiZoomIn style={{ marginRight: 6 }} />
                       Zoom View
@@ -364,265 +293,177 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
 
             {/* Right: Info */}
             <Col lg={5}>
-              <div style={{ marginBottom: 8 }}>
-                <h1
-                  style={{
-                    fontSize: 40,
-                    lineHeight: 1.15,
-                    fontWeight: 800,
-                    color: "#0b1b33",
-                    marginBottom: 8,
-                  }}
-                >
-                  {resolved.title}
-                </h1>
+              <div className="pd-sticky">
+                <div style={{ marginBottom: 8 }}>
+                  <h1 className="pd-title">{resolved.title}</h1>
 
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <div>
-                    <StarRow rating={resolved.rating} />{" "}
-                    <small style={{ color: "#6b7280" }}>
-                      ({resolved.rating}/5) {resolved.reviewsCount} reviews
-                    </small>
-                  </div>
-                  {resolved.badge && (
-                    <Badge bg="success" pill style={{ fontWeight: 700 }}>
-                      {resolved.badge}
-                    </Badge>
-                  )}
-                </div>
-              </div>
-
-              {/* Key features */}
-              <Card
-                style={{
-                  borderRadius: 14,
-                  border: "1px solid #e7ecf3",
-                  background: "linear-gradient(180deg,#f5f9ff,#f3f8ff)",
-                  marginTop: 16,
-                  marginBottom: 16,
-                }}
-              >
-                <Card.Body>
-                  <div
-                    style={{
-                      fontWeight: 800,
-                      color: "#0b1b33",
-                      marginBottom: 12,
-                    }}
-                  >
-                    Key Features
-                  </div>
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(3, 1fr)",
-                      gap: 12,
-                    }}
-                  >
-                    {(resolved.features || defaultFeatures).map((f, i) => (
-                      <div
-                        key={i}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 10,
-                          background: "#fff",
-                          border: "1px solid #e7ecf3",
-                          borderRadius: 12,
-                          padding: "10px 12px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            width: 34,
-                            height: 34,
-                            display: "grid",
-                            placeItems: "center",
-                            borderRadius: 10,
-                            background: "rgba(37,99,235,.10)",
-                            color: "#2563eb",
-                            border: "1px solid rgba(37,99,235,.2)",
-                            fontSize: 18,
-                          }}
-                        >
-                          {f.icon}
-                        </span>
-                        <span style={{ fontWeight: 700, color: "#0b1b33" }}>
-                          {f.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </Card.Body>
-              </Card>
-
-              {/* Purchase panel */}
-              <Card
-                style={{
-                  borderRadius: 14,
-                  border: "1px solid #e7ecf3",
-                  boxShadow: "0 10px 24px rgba(16,38,76,.06)",
-                }}
-              >
-                <Card.Body>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      gap: 14,
-                      flexWrap: "wrap",
-                      marginBottom: 6,
-                    }}
-                  >
-                    <div style={{ fontSize: 40, fontWeight: 800 }}>
-                      ${resolved.price.toFixed(2)}
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                    <div>
+                      <StarRow rating={resolved.rating} />{" "}
+                      <small style={{ color: "#6b7280" }}>
+                        ({resolved.rating}/5) {resolved.reviewsCount} reviews
+                      </small>
                     </div>
-                    {resolved.compareAtPrice && (
-                      <>
-                        <div
-                          style={{
-                            color: "#64748b",
-                            textDecoration: "line-through",
-                            fontWeight: 700,
-                          }}
-                        >
-                          ${resolved.compareAtPrice.toFixed(2)}
-                        </div>
-                        {save > 0 && (
-                          <Badge bg="danger" pill style={{ fontWeight: 700 }}>
-                            Save ${save.toFixed(0)}
-                          </Badge>
-                        )}
-                      </>
+                    {resolved.badge && (
+                      <Badge bg="success" pill style={{ fontWeight: 700 }}>
+                        {resolved.badge}
+                      </Badge>
                     )}
                   </div>
+                </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      color: inStock ? "#16a34a" : "#ef4444",
-                      marginBottom: 10,
-                    }}
-                  >
-                    <span
-                      style={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: "50%",
-                        background: inStock ? "#16a34a" : "#ef4444",
-                      }}
-                    />
-                    <small style={{ fontWeight: 700 }}>
-                      {inStock
-                        ? `In Stock - ${resolved.stock} available`
-                        : "Out of stock"}
-                    </small>
-                  </div>
+                {/* Key features */}
+                <Card
+                  style={{
+                    borderRadius: 14,
+                    border: "1px solid #e7ecf3",
+                    background: "linear-gradient(180deg,#f5f9ff,#f3f8ff)",
+                    marginTop: 16,
+                    marginBottom: 16,
+                  }}
+                >
+                  <Card.Body>
+                    <div style={{ fontWeight: 800, color: "#0b1b33", marginBottom: 12 }}>
+                      Key Features
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+                      {(resolved.features || defaultFeatures).map((f, i) => (
+                        <div
+                          key={i}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            background: "#fff",
+                            border: "1px solid #e7ecf3",
+                            borderRadius: 12,
+                            padding: "10px 12px",
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: 34,
+                              height: 34,
+                              display: "grid",
+                              placeItems: "center",
+                              borderRadius: 10,
+                              background: "rgba(37,99,235,.10)",
+                              color: "#2563eb",
+                              border: "1px solid rgba(37,99,235,.2)",
+                              fontSize: 18,
+                            }}
+                            aria-hidden="true"
+                          >
+                            {f.icon}
+                          </span>
+                          <span style={{ fontWeight: 700, color: "#0b1b33" }}>{f.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </Card.Body>
+                </Card>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 12,
-                      marginBottom: 12,
-                    }}
-                  >
-                    <div style={{ minWidth: 80 }}>Quantity:</div>
-                    <InputGroup style={{ width: 140 }}>
-                      <Button
-                        variant="light"
-                        style={{ border: "1px solid #e7ecf3" }}
-                        onClick={() => setQty((q) => Math.max(1, q - 1))}
-                      >
-                        −
-                      </Button>
-                      <Form.Control
-                        value={qty}
-                        onChange={(e) => {
-                          const v =
-                            Number(e.target.value.replace(/\D+/g, "")) || 1;
-                          setQty(Math.min(99, Math.max(1, v)));
-                        }}
-                        style={{ textAlign: "center" }}
+                {/* Purchase panel */}
+                <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3", boxShadow: "0 10px 24px rgba(16,38,76,.06)" }}>
+                  <Card.Body>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 14, flexWrap: "wrap", marginBottom: 6 }}>
+                      <div style={{ fontSize: 40, fontWeight: 800 }}>
+                        {formatMoney(resolved.price)}
+                      </div>
+                      {resolved.compareAtPrice && (
+                        <>
+                          <div style={{ color: "#64748b", textDecoration: "line-through", fontWeight: 700 }}>
+                            {formatMoney(resolved.compareAtPrice)}
+                          </div>
+                          {save > 0 && (
+                            <Badge bg="danger" pill style={{ fontWeight: 700 }}>
+                              Save {formatMoney(save)}
+                            </Badge>
+                          )}
+                        </>
+                      )}
+                    </div>
+
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, color: inStock ? "#16a34a" : "#ef4444", marginBottom: 10 }}>
+                      <span
+                        style={{ width: 10, height: 10, borderRadius: "50%", background: inStock ? "#16a34a" : "#ef4444" }}
+                        aria-hidden="true"
                       />
-                      <Button
-                        variant="light"
-                        style={{ border: "1px solid #e7ecf3" }}
-                        onClick={() => setQty((q) => Math.min(99, q + 1))}
-                      >
-                        +
+                      <small style={{ fontWeight: 700 }}>
+                        {inStock ? `In Stock - ${resolved.stock} available` : "Out of stock"}
+                      </small>
+                    </div>
+
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                      <label htmlFor="qty" style={{ minWidth: 80, margin: 0 }}>Quantity:</label>
+                      <InputGroup style={{ width: 160 }}>
+                        <Button
+                          variant="light"
+                          style={{ border: "1px solid #e7ecf3" }}
+                          onClick={() => setQty((q) => Math.max(1, q - 1))}
+                          aria-label="Decrease quantity"
+                        >
+                          −
+                        </Button>
+                        <Form.Control
+                          id="qty"
+                          inputMode="numeric"
+                          value={qty}
+                          onChange={(e) => {
+                            const v = Number((e.target.value || "").replace(/\D+/g, "")) || 1;
+                            setQty(Math.min(99, Math.max(1, v)));
+                          }}
+                          style={{ textAlign: "center" }}
+                          aria-live="polite"
+                        />
+                        <Button
+                          variant="light"
+                          style={{ border: "1px solid #e7ecf3" }}
+                          onClick={() => setQty((q) => Math.min(99, q + 1))}
+                          aria-label="Increase quantity"
+                        >
+                          +
+                        </Button>
+                      </InputGroup>
+                    </div>
+
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      className="w-100"
+                      style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}
+                      onClick={() => handleAddToCart(resolved, qty)}
+                    >
+                      <FiShoppingCart />
+                      Add to Cart
+                    </Button>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
+                      <Button variant="light" style={{ border: "1px solid #e7ecf3" }}>
+                        <FiHeart style={{ marginRight: 6 }} />
+                        Save for Later
                       </Button>
-                    </InputGroup>
-                  </div>
+                      <Button variant="light" style={{ border: "1px solid #e7ecf3" }}>
+                        <FiShare2 style={{ marginRight: 6 }} />
+                        Share
+                      </Button>
+                    </div>
 
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    className="w-100"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 10,
-                    }}
-                    onClick={() => handleAddToCart(resolved)}
-                  >
-                    <FiShoppingCart />
-                    Add to Cart
-                  </Button>
-
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: 12,
-                      marginTop: 12,
-                    }}
-                  >
-                    <Button variant="light" style={{ border: "1px solid #e7ecf3" }}>
-                      <FiHeart style={{ marginRight: 6 }} />
-                      Save for Later
-                    </Button>
-                    <Button variant="light" style={{ border: "1px solid #e7ecf3" }}>
-                      <FiShare2 style={{ marginRight: 6 }} />
-                      Share
-                    </Button>
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      marginTop: 12,
-                      color: "#10b981",
-                    }}
-                  >
-                    <FiCheckCircle />
-                    <small>Free returns on defective items • Secure checkout</small>
-                  </div>
-                </Card.Body>
-              </Card>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, color: "#10b981" }}>
+                      <FiCheckCircle />
+                      <small>Free returns on defective items • Secure checkout</small>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </div>
             </Col>
           </Row>
         </Container>
 
-        {/* Tiny scoped styles for hover/active accents */}
-        <style>{`
-          .thumb:hover img { transform: scale(1.02); }
-        `}</style>
+        <style>{`.thumb:hover img { transform: scale(1.02); }`}</style>
       </div>
 
-      {/* Full information/tabs section */}
+      {/* Info/tabs */}
       <ProductInfoSection
         product={{
           description: resolved.description,
@@ -661,7 +502,6 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
         }}
       />
 
-      {/* ✅ Pass the actual products array here */}
       <RelatedProducts
         products={products}
         currentId={resolved.id}
@@ -701,18 +541,28 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
                       <div style={{ fontWeight: 700 }}>{item.title}</div>
                       <div style={{ color: "#64748b" }}>Qty: {item.qty}</div>
                     </div>
-                    <div style={{ fontWeight: 700, color: "#245af0" }}>₹{item.price * item.qty}</div>
+                    <div style={{ fontWeight: 700, color: "#245af0" }}>
+                      {formatMoney(item.price * item.qty)}
+                    </div>
                   </li>
                 ))}
               </ul>
-              <div className="mb-3 p-3" style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb' }}>
-                <div className="d-flex justify-content-between"><span>Subtotal</span><span>₹{cartItems.reduce((sum, i) => sum + i.price * i.qty, 0)}</span></div>
-                <div className="d-flex justify-content-between"><span>Shipping</span><span>{cartItems.reduce((sum, i) => sum + i.price * i.qty, 0) > 999 ? 'Free' : `₹49`}</span></div>
-                <div className="d-flex justify-content-between"><span>Tax (12%)</span><span>₹{Math.round(cartItems.reduce((sum, i) => sum + i.price * i.qty, 0) * 0.12)}</span></div>
-                <div className="d-flex justify-content-between fw-bold"><span>Total</span><span>₹{cartItems.reduce((sum, i) => sum + i.price * i.qty, 0) + (cartItems.reduce((sum, i) => sum + i.price * i.qty, 0) > 999 ? 0 : 49) + Math.round(cartItems.reduce((sum, i) => sum + i.price * i.qty, 0) * 0.12)}</span></div>
-              </div>
+              {(() => {
+                const sub = cartItems.reduce((sum, i) => sum + i.price * i.qty, 0);
+                const ship = sub > 999 ? 0 : 49;
+                const tax = Math.round(sub * 0.12);
+                const total = sub + ship + tax;
+                return (
+                  <div className="mb-3 p-3" style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb' }}>
+                    <div className="d-flex justify-content-between"><span>Subtotal</span><span>{formatMoney(sub)}</span></div>
+                    <div className="d-flex justify-content-between"><span>Shipping</span><span>{ship ? formatMoney(ship) : 'Free'}</span></div>
+                    <div className="d-flex justify-content-between"><span>Tax (12%)</span><span>{formatMoney(tax)}</span></div>
+                    <div className="d-flex justify-content-between fw-bold"><span>Total</span><span>{formatMoney(total)}</span></div>
+                  </div>
+                );
+              })()}
               <div className="mb-2" style={{ color: '#64748b', fontSize: 13 }}>
-                <span>Seller: </span><span style={{ color: '#245af0', fontWeight: 600 }}>Print Mate Online</span>
+                <span>Seller: </span><span style={{ color: '#245af0', fontWeight: 600 }}>Print Mart Online</span>
                 <span className="ms-2">| Support: <a href="tel:8335516033" style={{ color: '#22c55e', textDecoration: 'none' }}>833-551-6033</a></span>
               </div>
               <div style={{ marginTop: 32, color: '#64748b', fontSize: 13 }}>
@@ -736,12 +586,11 @@ function withDefaults(p) {
     stock: p.stock ?? 60,
     rating: p.rating ?? 4.6,
     reviewsCount: p.reviewsCount ?? 128,
-    // ensure ProductInfoSection has something
     highlights: p.highlights ?? [],
     boxItems: p.boxItems ?? [],
     specs: p.specs ?? {},
     compatibility: p.compatibility ?? [],
-    category: p.category ?? "inkjet-printer", // safe default
+    category: p.category ?? "inkjet-printer",
     ...p,
   };
 }

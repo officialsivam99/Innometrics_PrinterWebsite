@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FiEye } from "react-icons/fi";
-import CartDrawer from './CartDrawer';
+import CartDrawer from "./CartDrawer";
 
 /* ----------------- Helpers ----------------- */
 
@@ -22,7 +22,7 @@ function normalizeBlogToProducts(blog = []) {
     const price = Number(
       (100 + (i % 15) * 7 + (item.userId % 3) * 12 + 0.99).toFixed(2)
     );
-    const rating = (3.8 + ((item.id % 12) / 20)).toFixed(1);
+    const rating = (3.8 + (item.id % 12) / 20).toFixed(1);
     const reviewsCount = 100 + (item.id % 50);
     const category = cats[(item.userId - 1) % cats.length];
     const image = `https://picsum.photos/seed/printer-${item.id}/700/460`;
@@ -121,6 +121,77 @@ const ProductGallery = ({ products, blog, title, subtitle }) => {
 
   return (
     <div style={{ background: "#f6f8fb" }}>
+      {/* Card layout helpers for consistent heights */}
+      <style>{`
+        .pm-card {
+          border-radius: 14px;
+          border: 1px solid #e7ecf3;
+          box-shadow: 0 6px 18px rgba(16, 38, 76, 0.06);
+          overflow: hidden;
+          background: #fff;
+          min-height: 420px;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          cursor: pointer;
+        }
+        .pm-image {
+          background: #f7fafc;
+          padding: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 210px;           /* fixed image area for consistency */
+        }
+        .pm-title {
+          font-size: 18px;
+          color: #0b1b33;
+          line-height: 1.25;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;   /* clamp to 2 lines */
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          min-height: calc(1.25em * 2); /* consistent title block height */
+          margin-bottom: 6px;
+        }
+        .pm-desc {
+          color: #56617a;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;   /* clamp to 3 lines */
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          min-height: calc(1.1em * 3 + 8px); /* consistent description block height */
+          margin-bottom: 8px;
+        }
+        .pm-meta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 8px;
+          min-height: 28px;        /* lock meta-row height */
+        }
+        .pm-rating {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: #f59e0b;
+          min-height: 22px;        /* lock rating-row height */
+        }
+        .pm-ship {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: #6b7280;
+          min-height: 22px;        /* lock shipping-row height */
+        }
+        .pm-actions {
+          margin-top: auto;        /* push actions to bottom */
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+      `}</style>
+
       <Container style={{ paddingTop: 28, paddingBottom: 48 }}>
         <header
           style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}
@@ -173,47 +244,24 @@ const ProductGallery = ({ products, blog, title, subtitle }) => {
           {filtered.map((p) => (
             <Col key={p.id} xs={12} sm={6} lg={4} xl={3}>
               <Card
+                className="pm-card"
                 onClick={() => goToDetail(p.id)}
-                style={{
-                  borderRadius: 14,
-                  border: "1px solid #e7ecf3",
-                  boxShadow: "0 6px 18px rgba(16, 38, 76, 0.06)",
-                  overflow: "hidden",
-                  background: "#fff",
-                  minHeight: 420,
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  cursor: "pointer",
-                }}
               >
-                <div
-                  style={{
-                    background: "#f7fafc",
-                    padding: 18,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    minHeight: 210,
-                  }}
-                >
+                <div className="pm-image">
                   <img
                     src={p.image}
                     alt={p.title}
-                    style={{ width: "100%", height: "auto", objectFit: "contain" }}
+                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
                     loading="lazy"
                   />
                 </div>
 
-                <Card.Body style={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 180 }}>
-                  <Card.Title style={{ fontSize: 18, color: "#0b1b33" }}>
-                    {p.title}
-                  </Card.Title>
-                  <Card.Text style={{ color: "#56617a", minHeight: 56 }}>
-                    {p.description}
-                  </Card.Text>
+                <Card.Body style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+                  <div className="pm-title">{p.title}</div>
 
-                  <div className="d-flex align-items-center justify-content-between mb-2">
+                  <div className="pm-desc">{p.description}</div>
+
+                  <div className="pm-meta">
                     <div style={{ fontWeight: 700, fontSize: 20 }}>
                       ${p.price?.toFixed?.(2) ?? p.price}
                     </div>
@@ -222,23 +270,17 @@ const ProductGallery = ({ products, blog, title, subtitle }) => {
                     </Badge>
                   </div>
 
-                  <div
-                    className="d-flex align-items-center gap-2"
-                    style={{ color: "#f59e0b" }}
-                  >
+                  <div className="pm-rating">
                     <StarRow rating={p.rating} />
                     <small style={{ color: "#6b7280" }}>({p.reviewsCount})</small>
                   </div>
 
-                  <div
-                    className="d-flex align-items-center mt-2"
-                    style={{ color: "#6b7280" }}
-                  >
-                    <span style={{ marginRight: 6 }}>🚚</span>
+                  <div className="pm-ship">
+                    <span>🚚</span>
                     <small>2–3 business days delivery</small>
                   </div>
 
-                  <div className="d-flex align-items-center gap-2 mt-auto">
+                  <div className="pm-actions">
                     <Button
                       className="flex-grow-1"
                       variant="primary"
@@ -288,7 +330,7 @@ const ProductGallery = ({ products, blog, title, subtitle }) => {
         show={cartOpen}
         onHide={() => setCartOpen(false)}
         cartItems={cartItems}
-        onCheckout={() => alert('Proceeding to checkout...')}
+        onCheckout={() => alert("Proceeding to checkout...")}
       />
     </div>
   );
