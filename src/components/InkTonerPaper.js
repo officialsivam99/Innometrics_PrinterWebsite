@@ -14,16 +14,17 @@ import {
   TbDroplet,
   TbPackage,
   TbTruck,
-  TbCrown,
   TbShieldCheck,
   TbFilter,
   TbSearch,
 } from "react-icons/tb";
+import { FiEye } from "react-icons/fi";
+import { useNavigate, Link } from "react-router-dom";
 
 import { products } from "./products"; // central products data
-import Header from './header';
-import SupportAndTrust from './SupportAndTrust';
-import LegalFooter from './LegalFooter';
+import Header from "./header";
+import SupportAndTrust from "./SupportAndTrust";
+import LegalFooter from "./LegalFooter";
 
 const BLUE = "#245af0";
 const TEXT = "#0b1b33";
@@ -34,15 +35,14 @@ function StarRow({ rating = 0 }) {
   const full = Math.floor(rating);
   const half = rating - full >= 0.5;
   return (
-    <span aria-label={`Rating ${rating} out of 5`} style={{ color: "#f59e0b" }}>
+    <span
+      aria-label={`Rating ${rating} out of 5`}
+      style={{ color: "#f59e0b", whiteSpace: "nowrap" }}
+    >
       {[...Array(5)].map((_, i) => {
         if (i < full) return <span key={i}>★</span>;
         if (i === full && half) return <span key={i}>☆</span>;
-        return (
-          <span key={i} style={{ opacity: 0.25 }}>
-            ★
-          </span>
-        );
+        return <span key={i} style={{ opacity: 0.25 }}>★</span>;
       })}
     </span>
   );
@@ -53,6 +53,8 @@ const typeOptions = ["All Types", "ink", "toner", "paper"];
 const sortOptions = ["Name A–Z", "Price Low–High", "Price High–Low", "Rating"];
 
 export default function InkTonerPaper({ onAddToCart = () => {} }) {
+  const navigate = useNavigate();
+
   // 🔹 Filter only Ink/Toner/Paper products from global products
   const supplyProducts = useMemo(
     () =>
@@ -83,12 +85,16 @@ export default function InkTonerPaper({ onAddToCart = () => {} }) {
 
     // brand filter
     if (brand !== "All Brands") {
-      list = list.filter((p) => (p.brand || "").toLowerCase() === brand.toLowerCase());
+      list = list.filter(
+        (p) => (p.brand || "").toLowerCase() === brand.toLowerCase()
+      );
     }
 
     // type filter
     if (type !== "All Types") {
-      list = list.filter((p) => (p.type || "").toLowerCase() === type.toLowerCase());
+      list = list.filter(
+        (p) => (p.type || "").toLowerCase() === type.toLowerCase()
+      );
     }
 
     // sort
@@ -109,9 +115,103 @@ export default function InkTonerPaper({ onAddToCart = () => {} }) {
     return list;
   }, [supplyProducts, query, brand, type, sort]);
 
+  const goToDetail = (id) => navigate(`/product/${id}`);
+
   return (
     <>
       <Header />
+      {/* Scoped styles: same as ProductGallery (no-crop images + aligned rows) */}
+      <style>{`
+        .pm-card {
+          border-radius: 14px;
+          border: 1px solid ${LINE};
+          box-shadow: 0 6px 18px rgba(16, 38, 76, 0.06);
+          overflow: hidden;
+          background: #fff;
+          min-height: 420px;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          cursor: pointer;
+          transition: box-shadow .2s ease, transform .2s ease;
+        }
+        .pm-card:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(16,38,76,.12); }
+
+        .pm-image{
+          --card-img-ar: 3/2;
+          background:#f7fafc;
+          display:grid; place-items:center;
+          aspect-ratio: var(--card-img-ar);
+          padding: 16px;
+          position:relative; z-index:0;
+          overflow:hidden;
+        }
+        .pm-image img{
+          position: static !important;
+          width:100%; height:100%;
+          object-fit: contain; object-position:center;
+          display:block;
+        }
+        @media (max-width:575.98px){ .pm-image{ aspect-ratio: 4/3; } }
+
+        .pm-title {
+          font-size: 18px;
+          color: ${TEXT};
+          line-height: 1.25;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          min-height: calc(1.25em * 2);
+          margin-bottom: 6px;
+        }
+        .pm-desc {
+          color: #56617a;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          min-height: calc(1.1em * 3 + 8px);
+          margin-bottom: 8px;
+        }
+        .pm-compat {
+          color: ${MUTED};
+          font-size: 12.5px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          min-height: 18px; /* lock height so rows align */
+        }
+        .pm-meta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 6px;
+          margin-bottom: 6px;
+          min-height: 28px;
+        }
+        .pm-rating {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: #f59e0b;
+          min-height: 22px;
+        }
+        .pm-ship {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: ${MUTED};
+          min-height: 22px;
+        }
+        .pm-actions {
+          margin-top: auto;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+      `}</style>
+
       <div style={{ background: "#f6f8fb" }}>
         {/* ---------- HERO HEADER ---------- */}
         <Container style={{ paddingTop: 28 }}>
@@ -235,90 +335,88 @@ export default function InkTonerPaper({ onAddToCart = () => {} }) {
             {filtered.map((p) => (
               <Col key={p.id} xs={12} sm={6} lg={4} xl={3}>
                 <Card
-                  className="h-100 border-0 shadow-sm d-flex flex-column"
-                  style={{ borderRadius: 14, overflow: "hidden", minHeight: 420, display: "flex" }}
+                  className="pm-card"
+                  onClick={() => goToDetail(p.id)}
                 >
-                  <div
-                    style={{
-                      background: "#f7fafc",
-                      minHeight: 180,
-                      display: "grid",
-                      placeItems: "center",
-                      padding: 14,
-                    }}
-                  >
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      style={{ width: "100%", height: "auto", objectFit: "contain" }}
-                      loading="lazy"
-                    />
+                  {/* Image top (no-crop) */}
+                  <div className="pm-image">
+                    <img src={p.image} alt={p.title} loading="lazy" />
                   </div>
 
-                  <Card.Body className="d-flex flex-column" style={{ flex: 1, minHeight: 200 }}>
-                    <div className="d-flex align-items-center justify-content-between mb-1">
-                      <Badge
-                        bg="light"
-                        text="dark"
-                        style={{ border: `1px solid ${LINE}` }}
-                      >
-                        {p.type ? p.type.toUpperCase() : "SUPPLY"}
-                      </Badge>
-                      {p.pageYield && (
-                        <Badge bg="success" title="Approximate page yield">
-                          {p.pageYield}
-                        </Badge>
-                      )}
-                    </div>
+                  {/* Body */}
+                  <Card.Body className="d-flex flex-column" style={{ flex: 1 }}>
+                    {/* Title & short desc (clamped) */}
+                    <div className="pm-title">{p.title}</div>
+                    <div className="pm-desc">{p.description}</div>
 
-                    <Card.Title style={{ fontSize: 16, color: TEXT }}>
-                      {p.title}
-                    </Card.Title>
-                    <Card.Text style={{ color: "#56617a", fontSize: 14 }}>
-                      {p.description}
-                    </Card.Text>
-
+                    {/* Compatibility (single-line, ellipsis) */}
                     {p.compatibleModels?.length ? (
-                      <small style={{ color: MUTED }}>
+                      <div className="pm-compat">
                         Compatible: {p.compatibleModels.slice(0, 2).join(", ")}
                         {p.compatibleModels.length > 2 ? " +" : ""}
-                      </small>
-                    ) : null}
+                      </div>
+                    ) : (
+                      <div className="pm-compat" />
+                    )}
 
-                    <div className="d-flex align-items-center justify-content-between mt-2">
-                      <div style={{ fontWeight: 800, fontSize: 18 }}>
+                    {/* Meta: price + type/brand/yield */}
+                    <div className="pm-meta">
+                      <div style={{ fontWeight: 700, fontSize: 20 }}>
                         ${Number(p.price).toFixed(2)}
                       </div>
-                      <div style={{ color: MUTED, fontSize: 12 }}>
-                        {p.delivery || "Fast shipping"}
+                      <div className="d-flex align-items-center gap-2">
+                        <Badge
+                          bg="light"
+                          text="dark"
+                          style={{ border: `1px solid ${LINE}` }}
+                        >
+                          {(p.type || "supply").toUpperCase()}
+                        </Badge>
+                        {p.pageYield && (
+                          <Badge bg="success" title="Approximate page yield">
+                            {p.pageYield}
+                          </Badge>
+                        )}
                       </div>
                     </div>
 
-                    {p.rating ? (
-                      <div className="mt-1" style={{ color: "#f59e0b" }}>
-                        <StarRow rating={p.rating} />{" "}
-                        <small style={{ color: MUTED }}>
-                          ({p.reviewsCount ?? "—"})
-                        </small>
-                      </div>
-                    ) : (
-                      <div style={{ height: 20 }} />
-                    )}
+                    {/* Rating + Delivery */}
+                    <div className="pm-rating">
+                      {p.rating ? (
+                        <StarRow rating={p.rating} />
+                      ) : (
+                        <span style={{ height: 16 }} />
+                      )}
+                      <small style={{ color: MUTED }}>
+                        ({p.reviewsCount ?? "—"})
+                      </small>
+                    </div>
+                    <div className="pm-ship">
+                      <span>🚚</span>
+                      <small>{p.delivery || "Fast shipping"}</small>
+                    </div>
 
-                    <div className="d-flex gap-2 mt-auto">
+                    {/* Actions: EXACTLY like ProductGallery */}
+                    <div className="pm-actions">
                       <Button
                         variant="primary"
                         className="flex-grow-1"
-                        onClick={() => onAddToCart(p)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onAddToCart(p);
+                        }}
                       >
                         Add to Cart
                       </Button>
                       <Button
                         variant="light"
                         style={{ border: `1px solid ${LINE}` }}
-                        title="Details"
+                        aria-label="View details"
+                        onClick={(e) => e.stopPropagation()}
+                        as={Link}
+                        to={`/product/${p.id}`}
                       >
-                        ⓘ
+                        <FiEye />
                       </Button>
                     </div>
                   </Card.Body>
