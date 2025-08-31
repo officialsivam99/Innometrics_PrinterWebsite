@@ -1,6 +1,6 @@
 // src/pages/office-printer.jsx
 import React, { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Container,
   Row,
@@ -9,7 +9,6 @@ import {
   Badge,
   Form,
   InputGroup,
-  Button,
 } from "react-bootstrap";
 import {
   FiHome,
@@ -17,7 +16,7 @@ import {
   FiBox,
   FiSearch,
   FiSliders,
-  FiEye,
+  FiArrowRight,
 } from "react-icons/fi";
 import { TbBriefcase, TbPrinter, TbNetwork } from "react-icons/tb";
 import { OfficeProducts as allOfficeProducts } from "../components/OfficeProducts";
@@ -31,117 +30,39 @@ function StarRow({ rating = 0 }) {
   const full = Math.floor(rating);
   const half = rating - full >= 0.5;
   return (
-    <span aria-label={`Rating ${rating} out of 5`} style={{ color: "#f59e0b", whiteSpace: "nowrap" }}>
+    <span aria-label={`Rating ${rating} out of 5`} style={{ color: "#f59e0b" }}>
       {[...Array(5)].map((_, i) => {
         if (i < full) return <span key={i}>★</span>;
         if (i === full && half) return <span key={i}>☆</span>;
-        return <span key={i} style={{ opacity: 0.25 }}>★</span>;
+        return (
+          <span key={i} style={{ opacity: 0.25 }}>
+            ★
+          </span>
+        );
       })}
     </span>
   );
 }
 
 export default function OfficePrinters() {
-  const navigate = useNavigate();
-
-  // 🔒 Scoped CSS matching ProductGallery
-  const styles = `
-    .pm-card {
-      border-radius: 14px;
-      border: 1px solid #e7ecf3;
-      box-shadow: 0 6px 18px rgba(16,38,76,.06);
-      overflow: hidden;
-      background: #fff;
-      min-height: 420px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      transition: box-shadow .2s ease, transform .2s ease;
-    }
-    .pm-card:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(16,38,76,.12); }
-
-    .pm-image{
-      --card-img-ar: 3/2;
-      background:#f7fafc;
-      display:grid; place-items:center;
-      aspect-ratio: var(--card-img-ar);
-      padding: 16px;
-      position:relative; z-index:0;
-      overflow:hidden;
-      border-bottom: 1px solid #e7ecf3;
-    }
-    .pm-image img{
-      position: static !important;
-      width:100%; height:100%;
-      object-fit: contain; object-position:center;
-      display:block;
-    }
-    @media (max-width:575.98px){ .pm-image{ aspect-ratio: 4/3; } }
-
-    .pm-title {
-      font-size: 18px;
-      color: #0b1b33;
-      line-height: 1.25;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: calc(1.25em * 2);
-      margin-bottom: 6px;
-    }
-    .pm-desc {
-      color: #6b7280;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: calc(1.1em * 3 + 8px);
-      margin-bottom: 8px;
-    }
-    .pm-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      min-height: 28px;
-    }
-    .pm-rating {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #f59e0b;
-      min-height: 22px;
-    }
-    .pm-ship {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #6b7280;
-      min-height: 22px;
-    }
-    .pm-actions {
-      margin-top: auto;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-  `;
-
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("name-asc");
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [lastAdded, setLastAdded] = useState(null);
 
-  // ✅ Only printers (exclude supplies ink/toner/paper)
+  // filter: only actual printers, not ink/paper
   const base = useMemo(
     () =>
-      allOfficeProducts.filter((p) => {
-        const type = (p.type || "").toLowerCase();
-        const isSupply = ["ink", "toner", "paper"].includes(type);
-        return !isSupply && !!p.category; // keep items that are actual products with category
-      }),
+      allOfficeProducts.filter(
+        (p) =>
+          p.category ||
+          p.type === "ink" ||
+          p.type === "toner" ||
+          p.type === "paper"
+            ? p.category
+            : null
+      ),
     []
   );
 
@@ -159,9 +80,9 @@ export default function OfficePrinters() {
       case "name-asc":
         return data.sort((a, b) => a.title.localeCompare(b.title));
       case "price-asc":
-        return data.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+        return data.sort((a, b) => a.price - b.price);
       case "price-desc":
-        return data.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+        return data.sort((a, b) => b.price - a.price);
       case "rating-desc":
         return data.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
       default:
@@ -183,12 +104,9 @@ export default function OfficePrinters() {
     setCartOpen(true);
   };
 
-  const goToDetail = (id) => navigate(`/product/${id}`);
-
   return (
     <>
       <Header />
-      <style>{styles}</style>
       <div style={{ background: "#f6f8fb" }}>
         <Container style={{ paddingTop: 20, paddingBottom: 36 }}>
           {/* Breadcrumb */}
@@ -250,7 +168,7 @@ export default function OfficePrinters() {
             </p>
             <Row className="g-3 mt-1">
               <Col md={4}>
-                <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3", background: "#fff" }}>
+                <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3" }}>
                   <Card.Body
                     style={{
                       display: "flex",
@@ -283,7 +201,7 @@ export default function OfficePrinters() {
                 </Card>
               </Col>
               <Col md={4}>
-                <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3", background: "#fff" }}>
+                <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3" }}>
                   <Card.Body
                     style={{
                       display: "flex",
@@ -316,7 +234,7 @@ export default function OfficePrinters() {
                 </Card>
               </Col>
               <Col md={4}>
-                <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3", background: "#fff" }}>
+                <Card style={{ borderRadius: 14, border: "1px solid #e7ecf3" }}>
                   <Card.Body
                     style={{
                       display: "flex",
@@ -414,66 +332,84 @@ export default function OfficePrinters() {
             </div>
           </div>
 
-          {/* Product Grid (EXACTLY like ProductGallery) */}
+          {/* Product Grid */}
           <Row className="g-4">
             {sorted.map((p) => (
               <Col key={p.id} xs={12} sm={6} lg={4} xl={3}>
-                <Card className="pm-card" onClick={() => goToDetail(p.id)}>
-                  {/* Image top */}
-                  <div className="pm-image">
-                    <img src={p.image} alt={p.title} loading="lazy" />
+                <Card
+                  style={{
+                    borderRadius: 14,
+                    border: "1px solid #e7ecf3",
+                    background: "#fff",
+                    boxShadow: "0 6px 18px rgba(16,38,76,.06)",
+                    height: "100%",
+                    display: "flex",
+                  }}
+                >
+                  <div
+                    style={{
+                      background: "#f7fafc",
+                      padding: 16,
+                      display: "grid",
+                      placeItems: "center",
+                      minHeight: 180,
+                    }}
+                  >
+                    <img
+                      src={p.image}
+                      alt={p.title}
+                      style={{
+                        width: "100%",
+                        height: 160,
+                        objectFit: "contain",
+                      }}
+                      loading="lazy"
+                    />
                   </div>
 
-                  {/* Body */}
-                  <Card.Body style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-                    <div className="pm-title">{p.title}</div>
-                    <div className="pm-desc">{p.description}</div>
-
-                    <div className="pm-meta">
-                      <div style={{ fontWeight: 700, fontSize: 20 }}>
-                        {typeof p.price === "number" ? `$${p.price.toFixed(2)}` : p.price}
-                      </div>
+                  <Card.Body style={{ display: "flex", flexDirection: "column" }}>
+                    <div className="d-flex align-items-center justify-content-between mb-2">
                       {p.category && (
-                        <Badge bg="light" text="dark" style={{ border: "1px solid #e7ecf3" }}>
+                        <Badge
+                          bg="light"
+                          text="dark"
+                          style={{ border: "1px solid #e7ecf3" }}
+                        >
                           {p.category.replace("-", " ")}
                         </Badge>
                       )}
+                      <div style={{ fontWeight: 800, fontSize: 18 }}>
+                        ${p.price.toFixed(2)}
+                      </div>
                     </div>
 
-                    <div className="pm-rating">
-                      <StarRow rating={p.rating} />
-                      <small style={{ color: "#6b7280" }}>({p.reviewsCount ?? 0})</small>
+                    <div style={{ fontWeight: 700, color: "#0b1b33" }}>
+                      {p.title}
+                    </div>
+                    <div style={{ color: "#6b7280", marginTop: 4, minHeight: 44 }}>
+                      {p.description}
                     </div>
 
-                    <div className="pm-ship">
-                      <span>🚚</span>
-                      <small>{p.delivery || "2–3 business days delivery"}</small>
+                    <div
+                      className="d-flex align-items-center justify-content-between"
+                      style={{ marginTop: 8 }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <StarRow rating={p.rating} />
+                        <small style={{ color: "#6b7280" }}>
+                          ({p.reviewsCount})
+                        </small>
+                      </div>
+                      <small style={{ color: "#6b7280" }}>🚚 {p.delivery}</small>
                     </div>
 
-                    <div className="pm-actions">
-                      <Button
-                        className="flex-grow-1"
-                        variant="primary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleAddToCart(p);
-                        }}
-                      >
-                        Add to Cart
-                      </Button>
-                      <Button
-                        variant="light"
-                        style={{ border: "1px solid #e7ecf3" }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          goToDetail(p.id);
-                        }}
-                        aria-label="View product"
-                        as={Link}
+                    <div className="mt-3">
+                      <Link
                         to={`/product/${p.id}`}
+                        className="btn btn-primary w-100"
                       >
-                        <FiEye />
-                      </Button>
+                        View Details <FiArrowRight style={{ marginLeft: 6 }} />
+                      </Link>
                     </div>
                   </Card.Body>
                 </Card>
