@@ -31,6 +31,12 @@ import LaserPrinter from "./components/LaserPrinters";// Import the InkjetPrinte
 import ProductDetail from "./components/ProductDetail";
 import { LaserProducts } from "./components/LaserProducts";
 
+import RegisterPage from "./authPages1.O/RegisterPage.jsx";
+import SplashScreen from "./authPages1.O/SplashScreen.jsx";
+import LoginPage from "./authPages1.O/LoginPage.jsx";
+import VerifyOtpPage from "./authPages1.O/VerifyOtpPage.jsx";
+import LoginOtpPage from "./authPages1.O/LoginOtpPage.jsx";
+
 export default function App() {
   return (
     <>
@@ -55,8 +61,19 @@ export default function App() {
         <Route path="/InkJetPrinters" element={<InkjetPrinter />} />
         <Route path="/LaserPrinters" element={<LaserPrinter />} />
         <Route path="/product/:id" element={<ProductDetail products={LaserProducts} />} />
+
         {/* Add other routes as needed */}
       </Routes>
+
+          <Routes>
+          <Route path="/" element={<SplashScreen/>} />
+          <Route path="/register" element={<RegisterPage/>} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/verify-otp" element={<VerifyOtpPage />} />
+          <Route path="/login-otp" element={<LoginOtpPage />} />
+
+        </Routes>
+
       <LegalFooter />
     </>
   );
