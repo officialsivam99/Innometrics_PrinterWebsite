@@ -19,6 +19,7 @@ import Privacy from './pages/privacy';
 import Terms from './pages/terms';
 import Refund from './pages/refund';
 
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -84,7 +85,14 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+     <Auth0Provider
+    domain="devshivam199.us.auth0.com"
+    clientId="rj4ojy3QCYwtFrjfc1qPT42ttM1vBaFX"
+    authorizationParams={{
+      redirect_uri: window.location.origin
+    }}
+  >
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </Auth0Provider>
+  
 );

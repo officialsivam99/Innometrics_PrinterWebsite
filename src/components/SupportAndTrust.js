@@ -1,3 +1,4 @@
+
 // src/components/SupportAndTrust.jsx
 import React from "react";
 import {
@@ -34,9 +35,10 @@ const SupportAndTrust = ({
       tone: "#0ea5e9",
       icon: <FiSquare size={18} />,
       links: [
-        { label: "Home Printer", href: "/category/home-printer" },
-        { label: "INK, TONER & PAPER", href: "/category/supplies" },
-        { label: "Office Printer", href: "/category/office-printer" },
+          { label: "Home Printer", href: "/HomePrinter" },
+          { label: "Ink, Toner & Paper", href: "/InkTonerPaper" },
+          { label: "Office Printer", href: "/OfficePrinters" },
+          { label: "InkJet Printer", href: "/InkJetPrinters" },
       ],
     },
     {
@@ -44,7 +46,7 @@ const SupportAndTrust = ({
       tone: "#10b981",
       icon: <FiHeart size={18} />,
       links: [
-        { label: "Order Tracking", href: "/support/track" },
+        { label: "Order & Tracking", href: "/support/track" },
         { label: "Returns & Exchanges", href: "/support/returns" },
         { label: "Help Center", href: "/support/help" },
         { label: "Sitemap", href: "/sitemap" },
@@ -56,7 +58,7 @@ const SupportAndTrust = ({
       icon: <FiInfo size={18} />,
       links: [
         { label: "About Us", href: "/about" },
-        { label: "Privacy Policy", href: "/privacy" },
+  { label: "Privacy Policy", href: "/privacy" },
         { label: "Terms & Conditions", href: "/terms" },
         { label: "Refund Policy", href: "/refund" },
       ],
@@ -206,7 +208,8 @@ const SupportAndTrust = ({
 
       {/* Scoped styles */}
       <style>{`
-        .st-wrap { background: #fafcff; padding: 48px 16px 56px; }
+  .st-wrap { background: #fafcff; padding: 48px 16px 56px; }
+  .st-link-btn span { min-width: 160px; }
         .st-container { max-width: 1200px; margin: 0 auto; }
 
         .st-top {
@@ -270,7 +273,7 @@ const SupportAndTrust = ({
         .st-links { display: grid; gap: 8px; margin-top: 8px; }
         .st-link-btn {
           width: 100%; background: #fff; border: 1px solid #e7ecf3; border-radius: 10px;
-          display: flex; align-items: center; justify-content: space-between; gap: 10px;
+          display: flex; align-items: center; justify-content: flex-start; gap: 10px; text-align: left;
           padding: 12px 12px; font-weight: 600; color: #0f172a; cursor: pointer;
           transition: border-color .15s ease, transform .15s ease, background .15s ease;
         }

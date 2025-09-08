@@ -1,3 +1,4 @@
+// src/components/ProductDetail.jsx
 import React, { useMemo, useState } from "react";
 import {
   Container,
@@ -9,7 +10,7 @@ import {
   InputGroup,
   Form,
 } from "react-bootstrap";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   FiShoppingCart,
   FiHeart,
@@ -137,18 +138,10 @@ const defaultFeatures = [
 const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
   const { id: routeId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const idToUse = productId ?? routeId;
 
   const resolved = useMemo(() => {
-    // 1) If parent passed a product prop, use it
     if (product) return withDefaults(product);
-
-    // 2) If the list page sent the product in router state, prefer that
-    const stateProduct = location.state?.product;
-    if (stateProduct) return withDefaults(stateProduct);
-
-    // 3) Lookup by id inside provided products/blog as a fallback
     if (idToUse != null) {
       const fromProducts = products.find((p) => String(p.id) === String(idToUse));
       if (fromProducts) return withDefaults(fromProducts);
@@ -157,7 +150,7 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
         return withDefaults(normalizeBlogItem(blog[indexInBlog], indexInBlog));
     }
     return null;
-  }, [product, idToUse, products, blog, location.state]);
+  }, [product, idToUse, products, blog]);
 
   const [activeImg, setActiveImg] = useState(0);
   const [qty, setQty] = useState(1);
@@ -220,7 +213,7 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
     <>
       <Header />
 
-      {/* Scoped CSS */}
+      {/* Scoped CSS to keep layout consistent */}
       <style>{`
         .pd-title {
           font-size: 40px; line-height: 1.15; font-weight: 800; color: #0b1b33; margin-bottom: 8px;
@@ -233,7 +226,6 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
         .pd-thumb-btn { background:#fff; border-radius:10px; padding:6px; display:grid; place-items:center; cursor:pointer; }
         .pd-thumb-btn img { width:100%; height:60px; object-fit:contain; }
         .pd-sticky { position: sticky; top: 24px; }
-        .thumb:hover img { transform: scale(1.02); }
       `}</style>
 
       <div style={{ background: "#fff" }}>
@@ -467,6 +459,8 @@ const ProductDetail = ({ product, productId, products = [], blog = [] }) => {
             </Col>
           </Row>
         </Container>
+
+        <style>{`.thumb:hover img { transform: scale(1.02); }`}</style>
       </div>
 
       {/* Info/tabs */}

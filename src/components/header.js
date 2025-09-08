@@ -2,9 +2,11 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 import LaserPrinter from "./LaserPrinters";
+import { useAuth0 } from "@auth0/auth0-react";
 
 
 const Header = () => {
+  const { loginWithRedirect } = useAuth0();
   const BLUE = "#245af0";
   const TEXT = "#111827";
   const MUTED = "#6b7280";
@@ -200,9 +202,7 @@ const Header = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-dark p-0" href="#">
-                More ▼
-              </a>
+              <button onClick={() => loginWithRedirect()}>Log In</button>
             </li>
           </ul>
         </div>
